@@ -34,3 +34,4 @@ Route::post("/photographer/add", [AlbumController::class, "add"]);
 Route::post("/upload", [AlbumController::class, "upload"]);
 
 Route::get("/upload/{album}", [CaptureController::class,"getByAlbum"]);
+Route::delete("/img/delete/{img}", [CaptureController::class, "removeImg"]);

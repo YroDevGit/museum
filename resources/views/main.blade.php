@@ -180,7 +180,7 @@
         </div>
         <div class="img-actions">
             <button class="save" onclick="document.getElementById('fullimg').style.display='none';">Close</button>
-            <button class="delete">Delete</button>
+            <button class="delete" id="delIMG">Delete</button>
             <p style="padding: 7px; color:white;">
                 <span>long click on the image
                     and click save to camera roll</span>
@@ -199,6 +199,7 @@
     <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
 
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('jspost.js') }}"></script>
 
 
     <script>
@@ -216,7 +217,7 @@
                             document.querySelector("#cardcolumn").insertAdjacentHTML(
                                 'beforeend', `
                     <div class="card img-loaded">
-                        <a onclick="displayIMG('{{ url('') }}/${column.image_path}')">
+                        <a onclick="displayIMG('{{ url('') }}/${column.image_path}', '${column.id}')">
                             <img class="card-img-top probootstrap-animate fadeInUp probootstrap-animated" src="{{ url('') }}/${column.image_path}" alt="Card image cap">
                         </a>
                     </div>
@@ -232,10 +233,53 @@
     </script>
 
     <script>
-        function displayIMG(img) {
+        function displayIMG(img, imgid) {
             document.getElementById('fullimg').style.display = '';
             document.getElementById('fullimg1').src = img;
+            localStorage.setItem("mainIMGID", imgid);
         }
+
+        
+    </script>
+
+    <script>
+        document.querySelector("#delIMG").addEventListener("click", function() {
+            Swal.fire({
+                title: "Are you sure",
+                text: "are you sure to delete selected image?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Okay, delete it.!"
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    const imgID = localStorage.getItem("mainIMGID");
+                    mypost({
+                        url: `{{ url('/img/delete') }}/${imgID}`,
+                        method: "DELETE",
+                        success: function(response) {
+                            if (response.code == 200) {
+                                Swal.fire({
+                                    title: "SUCCESS",
+                                    text: "Capture deleted",
+                                    icon: "success"
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "ERROR",
+                                    text: response.message,
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: function(error) {
+                            console.log(response);
+                        }
+                    });
+                }
+            });
+        });
     </script>
 
 </body>

@@ -192,7 +192,7 @@
                     } else if (response.code == 409) {
                         Swal.fire({
                             title: "FAILED",
-                            text: "This device is already in use",
+                            text: response.details.error,
                             icon: "error"
                         }).then(()=>{window.location.href = "";});
                         return
