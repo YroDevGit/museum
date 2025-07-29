@@ -7,6 +7,7 @@ use App\Models\Capture;
 use Exception;
 use Mockery\Matcher\Type;
 use TypeError;
+use App\Http\Resources\CaptureUpdates;
 
 class CaptureController extends Controller
 {
@@ -14,7 +15,7 @@ class CaptureController extends Controller
         try{
             $this->helper("Response");
             $result = Capture::where(["album_id"=>$album])->get();
-            return success_response(["data"=>$result]);
+            return success_response(["data"=>$result, "updates"=>CaptureUpdates::collection($result)]);
         }catch(Exception $e){
             return error_response(["error"=>$e->getMessage()]);
         }catch(TypeError $e){

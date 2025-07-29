@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use App\Models\Capture;
 use App\Models\Remote;
+use Illuminate\Support\Facades\DB;
 
 class AlbumController extends Controller
 {
@@ -20,10 +21,12 @@ class AlbumController extends Controller
     public function __construct()
     {
         $this->helper("Response");
+        $this->helper("Hashing");
     }
 
     public function add(Request $req)
     {
+        DB::beginTransaction();
         try {
             $validator = Validator::make($req->all(), [
                 "remote_id" => "required",
@@ -33,6 +36,7 @@ class AlbumController extends Controller
             ]);
 
             if ($validator->fails()) {
+                DB::rollBack();
                 return valfailed_response(["errors" => $validator->errors()]);
             }
 
@@ -46,6 +50,7 @@ class AlbumController extends Controller
             ]);
 
             if (!$album) {
+                DB::rollBack();
                 return failed_response(["error" => "Unable to proceed", "details" => $album]);
             }
             $users = Users::create([
@@ -53,13 +58,19 @@ class AlbumController extends Controller
                 "email" => $req->input("email"),
                 "date_add" => now(),
                 "log" => "",
-                "album_id" => $album->id
+                "album_id" => $album->id,
             ]);
 
-            return success_response(["data" => ["users" => $users, "albums" => $album]]);
+            $albumid = $album->id;
+            $userid = $users->id;
+            $myhash = my_hash("SALT123".$albumid.$userid);
+
+            return success_response(["data" => ["users" => $users, "albums" => $album, "user_id"=>$userid, "album_id"=>$albumid, "hometoken"=>$myhash]]);
         } catch (Exception $e) {
+            DB::rollBack();
             return error_response(["error" => $e->getMessage()]);
         } catch (TypeError $e) {
+            DB::rollBack();
             return error_response(["error" => $e->getMessage()]);
         }
     }
@@ -67,10 +78,17 @@ class AlbumController extends Controller
 
     public function checkRemote(Request $req, $remote, $token)
     {
+        $this->helper("Hashing");
         $id =  $remote;
+        $shared = $req->has("shared");
+        $ctoken = my_hash("SALT123".$remote);
+        if($token !== $ctoken){
+            return failed_response(["error"=>"Invalid token"]);
+        }
+
         try {
             if (!$id || !$token) {
-                return failed_response(["details" => "Param remote id and token is required"]);
+                return failed_response(["error" => "Param remote id and token is required"]);
             }
 
             $rem = Remote::where(["id"=>$id])->first();
@@ -78,11 +96,11 @@ class AlbumController extends Controller
                return failed_response(["error" => "Remote not found!"]); 
             }
             $result = Album::where(["remote_id" => $id, "status" => "live"])->first();
-            if ($result) {
+            if ($result && !$shared) {
                 return failed_response(["error" => "This device is already in use"]);
             }
 
-            return success_response(["data" => "REMOTE IS READY", "remote" => $id]);
+            return success_response(["data" => "REMOTE IS READY", "remote" => $id, "shared"=>$shared, "album"=>$result, "remotetoken"=>$ctoken]);
         } catch (TypeError $e) {
             return error_response(["error" => $e->getMessage()]);
         } catch (Exception $e) {
@@ -160,5 +178,11 @@ class AlbumController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+
+
+    public function validateUserAlbum($userId, $albumId){
+        $this->helper("Hashing");
+        return my_hash("SALT123".$albumId.$userId);
     }
 }

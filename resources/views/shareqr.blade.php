@@ -84,22 +84,17 @@
 
 <body>
     <div class="container">
-        <h1>QR Code Generator</h1>
-        <input type="text" id="qrText" placeholder="Enter text or URL" />
-        <button onclick="generateQRCode()">Generate QR Code</button>
+        <div>
+            <a id="backbtn" style="text-decoration: underline;">Back</a>
+        </div>
+        <input type="hidden" value="{{'photographer/remote'.'/'.$remote.'/'."$token"."?shared=yes"}}" id="qrText" placeholder="Enter text or URL" />
+        <button id="toclickqr" style="display: none" onclick="generateQRCode()">Generate QR Code</button>
+        <p><span>Share QR to your friend to share album</span></p>
         <div class="qr-container">
             <canvas id="qrCanvas"></canvas>
         </div>
     </div>
-    <script src="{{ asset('jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ asset('jspost.js') }}"></script>
 
-    <script>
-        window.addEventListener("DOMContentLoaded", function(){
-            const id = document.getElementById('qrText').value.trim();
-            
-        });
-    </script>
     
     <script>
         const qr = new QRious({
@@ -114,31 +109,17 @@
                 alert("Please enter text or a URL.");
                 return;
             }
-            let qrtext = null;
-            mypost({
-                url: "{{url('')}}/qr/get/"+text,
-                method: "GET",
-                success: function(response){
-                    if(response.code == 200){
-                        const data = response.details.data;
-                        const token =  response.details.token;
-                        const qrtextresult = `photographer/remote/${data.id}/${token}`;
-                        qr.value = qrtextresult;
-                        console.log(qrtextresult);
-                    }else{
-                        alert(response.message);
-                    }
-                },
-                error: function(error){
-                    
-                }
-            });
-            
+            qr.value = text;
         }
-    </script>
 
-    <script>
-        
+        window.addEventListener("DOMContentLoaded", function(){
+            document.getElementById("toclickqr").click();
+        });
+
+        document.getElementById("backbtn").addEventListener("click", function(){
+            const home = localStorage.getItem("homeurl");
+            window.location.href = "{{url('')}}"+""+home;
+        });
     </script>
 </body>
 

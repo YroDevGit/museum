@@ -49,6 +49,9 @@
             </nav>
             <footer class="probootstrap-aside-footer probootstrap-animate" data-animate-effect="fadeInLeft">
                 <ul class="list-unstyled d-flex probootstrap-aside-social">
+                    <li><a href="#" class="p-2"><span class="icon-download"></span></a></li>
+                    <li><a href="#" class="p-2"><span class="icon-link"></span></a></li>
+                    <li><a href="#" id="iconshare" class="p-2"><span class="icon-share"></span></a></li>
                 </ul>
                 <p>&copy; 2017 <a href="https://uicookies.com/" target="_blank">uiCookies:Aside</a>. <br> All Rights
                     Reserved.</p>
@@ -205,31 +208,47 @@
     <script>
         $(document).ready(function() {
             localStorage.setItem("homeurl", window.location.pathname);
-            setTimeout(() => {
-                $.ajax({
-                    url: '{{ url("/upload/$albumid") }}',
-                    method: "GET",
-                    success: function(response) {
-                        const data = response?.details?.data ?? [];
+            localStorage.removeItem("contentToken");
+            loadAllImage();
+            setInterval(() => {
+                loadAllImage();
+            }, 7000);
+        });
+    </script>
 
-                        data.forEach(column => {
-                            console.log(column);
-                            document.querySelector("#cardcolumn").insertAdjacentHTML(
-                                'beforeend', `
+    <script>
+        function loadAllImage() {
+            $.ajax({
+                url: '{{ url("/upload/$albumid") }}',
+                method: "GET",
+                success: function(response) {
+                    const data = response?.details?.data ?? [];
+                    const updates = response?.details?.data ?? [];
+                    const currentContent = localStorage.getItem("contentToken") ?? "";
+                    const newUpdate = JSON.stringify(updates);
+                    if (currentContent === newUpdate) {
+                        return;
+                    }
+                    localStorage.setItem("contentToken", newUpdate);
+
+                    document.querySelector("#cardcolumn").innerHTML = '';
+                    data.forEach(column => {
+                        console.log(column);
+                        document.querySelector("#cardcolumn").insertAdjacentHTML(
+                            'beforeend', `
                     <div class="card img-loaded">
                         <a onclick="displayIMG('{{ url('') }}/${column.image_path}', '${column.id}')">
                             <img class="card-img-top probootstrap-animate fadeInUp probootstrap-animated" src="{{ url('') }}/${column.image_path}" alt="Card image cap">
                         </a>
                     </div>
                     `);
-                        });
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            }, 1000);
-        });
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
     </script>
 
     <script>
@@ -238,8 +257,14 @@
             document.getElementById('fullimg1').src = img;
             localStorage.setItem("mainIMGID", imgid);
         }
+    </script>
 
-        
+    <script>
+        document.querySelector("#iconshare").addEventListener("click", function() {
+            const remoteID = localStorage.getItem("remote_id");
+            const token = localStorage.getItem("remotetoken");
+            window.location.href = "{{ url('/shareqr') }}/" + remoteID + "/" + token;
+        });
     </script>
 
     <script>

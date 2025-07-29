@@ -14,7 +14,8 @@ class Users extends Model
         "album_id",
         "email",
         "name",
-        "log"
+        "log",
+        "org"
     ];
 
     public $timestamps = false;

@@ -63,6 +63,8 @@
     <script>
         // Ensure the DOM is fully loaded before running the script
         document.addEventListener('DOMContentLoaded', function() {
+            const sharedAlbum = localStorage.getItem("shared");
+            const albumID = localStorage.getItem("album");
             // --- Form Submission Logic ---
             const detailsForm = document.getElementById('details-form');
             const nameInput = document.getElementById('name-input');
@@ -71,7 +73,7 @@
             const formMessage = document.getElementById('form-message');
 
             detailsForm.addEventListener('submit', function() {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault();
 
                 const name = nameInput.value.trim();
                 const email = emailInput.value.trim();
@@ -83,8 +85,13 @@
                     return;
                 }
 
+                let url = "/photographer/add"
+                if(sharedAlbum == "true"){
+                    url = "/photographer/invited/"+albumID;
+                }
+
                 $.ajax({
-                    url: "/photographer/add",
+                    url: url,
                     method: "POST",
                     data: {
                         name: name,
@@ -104,7 +111,8 @@
                             const users = data.users;
                             const album_id = albums.id;
                             const user_id = users.id;
-                            window.location.href = `/photographer/album/${album_id}/user/${user_id}/${response.code}`;
+                            const hometoken = data.hometoken;
+                            window.location.href = `/photographer/album/${album_id}/user/${user_id}/${hometoken}`;
                         });return;
                         }else{
                             Swal.fire({
