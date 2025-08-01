@@ -219,7 +219,7 @@
     <script>
         function loadAllImage() {
             mypost({
-                url: '{{ url("/upload/$albumid?saved=yes") }}',
+                url: '{{ url("/api/upload/$albumid?saved=yes") }}',
                 method: "GET",
                 success: function(response) {
                     const data = response?.details?.data ?? [];
@@ -275,7 +275,7 @@
                 if (res.isConfirmed) {
                     const imgID = localStorage.getItem("mainIMGID");
                     mypost({
-                        url: `{{ url('/img/delete') }}/${imgID}`,
+                        url: `{{ url('/api/img/delete') }}/${imgID}`,
                         method: "DELETE",
                         success: function(response) {
                             if (response.code == 200) {

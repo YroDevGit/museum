@@ -3,15 +3,26 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\CaptureController;
+use Illuminate\Http\Request;
+use App\Http\Controllers\RemoteController;
+use App\Models\Users;
+use App\Http\Controllers\processController;
+use App\Models\inviteToken;
 
-Route::prefix("api")->middleware("auth.authenticate")->group(function(){
+Route::prefix("")->middleware("auth.authenticate")->group(function () {
+
+    Route::get("/photographer/remote/{remote}/{token}", [AlbumController::class, "checkRemote"]);
+    Route::post("/photographer/add", [AlbumController::class, "add"]);
+    Route::post("/photographer/invited/{album}", [UsersController::class, "invited"]);
+    Route::post("/upload", [AlbumController::class, "upload"]);
+
+    Route::get("/upload/{album}", [CaptureController::class, "getByAlbum"]);
+    Route::delete("/img/delete/{img}", [CaptureController::class, "removeImg"]);
+    Route::get("/qr/get/{qrid}", [RemoteController::class, "getRemote"]);
+    Route::post("/share/email", [processController::class, "shareAlbumEmail"]);
+
+    Route::post("/saveimage/{imageid}", [CaptureController::class, "saveImage"]);
+    Route::get("/download/{albumid}", [CaptureController::class, "downloadZip"]);
     
-
-    Route::prefix("album")->controller(AlbumController::class)->group(function(){
-        Route::post("/add", "add");
-    });
-
 });
-
-Route::post("/remote/add/{remote}/{token}", [AlbumController::class, "checkRemote"]);
-

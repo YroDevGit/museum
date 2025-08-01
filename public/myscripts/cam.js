@@ -59,7 +59,7 @@ uploadBtn.addEventListener('click', () => {
     const remid = localStorage.getItem("remote_id");
 
     mypost({
-        url: "/upload",
+        url: apiURL+"/upload",
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

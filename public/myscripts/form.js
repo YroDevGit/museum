@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
             url = "/photographer/invited/" + albumID;
         }
 
-        $.ajax({
-            url: baseURL+url,
+        mypost({
+            url: apiURL+url,
             method: "POST",
             data: {
                 name: name,

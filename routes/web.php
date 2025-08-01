@@ -10,6 +10,7 @@ use App\Models\Users;
 use App\Http\Controllers\processController;
 use App\Models\inviteToken;
 
+
 Route::get('/', function () {
     return view('scan');
 });
@@ -68,16 +69,5 @@ Route::get("/sharemail/{invite_token}", function($invite_token){
     return view("tokenprocess", $find);
 });
 
-Route::get('/hello',[AlbumController::class, "add"]);
-Route::get("/photographer/remote/{remote}/{token}", [AlbumController::class, "checkRemote"]);
-Route::post("/photographer/add", [AlbumController::class, "add"]);
-Route::post("/photographer/invited/{album}", [UsersController::class, "invited"]);
-Route::post("/upload", [AlbumController::class, "upload"]);
 
-Route::get("/upload/{album}", [CaptureController::class,"getByAlbum"]);
-Route::delete("/img/delete/{img}", [CaptureController::class, "removeImg"]);
-Route::get("/qr/get/{qrid}", [RemoteController::class, "getRemote"]);
-Route::post("/share/email", [processController::class, "shareAlbumEmail"]);
 
-Route::post("/saveimage/{imageid}", [CaptureController::class, "saveImage"]);
-Route::get("/download/{albumid}", [CaptureController::class, "downloadZip"]);

@@ -12,7 +12,7 @@ function generateQRCode() {
     }
     let qrtext = null;
     mypost({
-        url: "{{url('')}}/qr/get/" + text,
+        url: `${apiURL}/qr/get/` + text,
         method: "GET",
         success: function (response) {
             if (response.code == 200) {

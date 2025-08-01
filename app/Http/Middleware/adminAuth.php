@@ -15,9 +15,20 @@ class adminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $header = $request->bearerToken();
-        if(!$header){
-            
+        $header = $request->header("apikey");
+        if (!$header) {
+            return response()->json([
+                "code" => env("CODE_UNAUTHORIZE"),
+                "message" => "Unauthorize",
+                "details" => ["error" => "no apikey found"]
+            ]);
+        }
+        if ($header !== env("API_KEY")) {
+            return response()->json([
+                "code" => env("CODE_UNAUTHORIZE"),
+                "message" => "Unauthorize",
+                "details" => ["error" => "Invalid apikey"]
+            ]);
         }
         return $next($request);
     }

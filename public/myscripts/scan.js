@@ -130,8 +130,8 @@ statusMessage.innerText = "Click 'Start Scan' to begin.";
 
 // Your existing checkQR function (ensure `url()` is defined or removed for static testing)
 function checkQR(decoded) {
-    $.ajax({
-        url: '/' + decoded,
+    mypost({
+        url: apiURL + '/' + decoded,
         method: 'GET',
         success: function (response) {
             if (response.code == 200) {

@@ -7,7 +7,7 @@ inviteusericon.addEventListener("click", function() {
 //load all images
 function loadAllImage() {
     mypost({
-        url: `${baseURL}/upload/${albumid}`,
+        url: `${apiURL}/upload/${albumid}`,
         method: "GET",
         success: function(response) {
             const data = response?.details?.data ?? [];
@@ -81,7 +81,7 @@ document.querySelector("#delIMG").addEventListener("click", function() {
         if (res.isConfirmed) {
             const imgID = localStorage.getItem("mainIMGID");
             mypost({
-                url: `${baseURL}/img/delete/${imgID}`,
+                url: `${apiURL}/img/delete/${imgID}`,
                 method: "DELETE",
                 success: function(response) {
                     if (response.code == 200) {
@@ -121,7 +121,7 @@ invitebtn.addEventListener("click", function(){
     }
 
     mypost({
-        url: `${baseURL}/share/email`,
+        url: `${apiURL}/share/email`,
         method:"POST",
         data:JSON.stringify({
             email: email.trim(),
@@ -163,7 +163,7 @@ function saveIMG(){
         if(action.isConfirmed){
             const selectedImage = localStorage.getItem("mainIMGID");
             mypost({
-                url: `${baseURL}/saveimage/${selectedImage}`,
+                url: `${apiURL}/saveimage/${selectedImage}`,
                 method: "POST",
                 success: function(response){
                     if(response.code==200){
