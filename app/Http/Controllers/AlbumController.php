@@ -65,6 +65,7 @@ class AlbumController extends Controller
             $userid = $users->id;
             $myhash = my_hash("SALT123".$albumid.$userid);
 
+            DB::commit();
             return success_response(["data" => ["users" => $users, "albums" => $album, "user_id"=>$userid, "album_id"=>$albumid, "hometoken"=>$myhash]]);
         } catch (Exception $e) {
             DB::rollBack();

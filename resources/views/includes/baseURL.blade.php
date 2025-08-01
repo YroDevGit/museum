@@ -1,0 +1,3 @@
+<script>
+    baseURL = "{{url('')}}";
+</script>

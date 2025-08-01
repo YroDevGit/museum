@@ -12,7 +12,8 @@ use App\Http\Resources\UserResource;
 class UsersController extends Controller
 {
     public function __construct()
-    {
+    {   
+        $this->helper("Hashing");
         $this->helper("Response");
     }
 
@@ -47,11 +48,11 @@ class UsersController extends Controller
                 "org" => 0
             ]);
 
-            $album = Album::where(["id"=>$album])->first();
-            $albumid = $album;
-            $userid = $result->id;
+            $albumResult = Album::where(["id"=>$album])->first();
+            $albumId = $album;
+            $userId = $result->id;
             $myhash = my_hash("SALT123".$albumId.$userId);
-            return success_response(["data" => ["users" => $users, "albums" => $album, "user_id"=>$userId, "album_id"=>$albumId, "hometoken"=>$myhash]]);
+            return success_response(["data" => ["users" => $result, "albums" => $album, "user_id"=>$userId, "album_id"=>$albumId, "hometoken"=>$myhash]]);
         } catch (Exception $e) {
             return error_response(["error" => $e->getMessage()]);
         } catch (TypeError $e) {
