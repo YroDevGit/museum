@@ -100,3 +100,28 @@ backBtn.addEventListener('click', () => {
     const home = localStorage.getItem("homeurl");
     window.location.href = `${baseURL}` + home;
 });
+
+
+window.addEventListener("DOMContentLoaded", function(){
+const alb = localStorage.getItem("album");
+mypost({
+        url: `${apiURL}/checkAlbum/${alb}`,
+        method: "GET",
+        success: function(response){
+            if(response.code == 200){
+                //Proceed
+            }else{
+                Swal.fire({
+                    title: "ERROR",
+                    text: response.details.error,
+                    icon: "error"
+                }).then(()=>{
+                    window.location.href = localStorage.getItem("homeurl");
+                });
+            }
+        },
+        error: function(error){
+            alert(error);
+        }
+    });
+});

@@ -204,19 +204,21 @@ class AlbumController extends Controller
             $result = cookies::create($data);
             if (! $result) {
                 DB::rollBack();
-                return failed_response(["error"=>"Unable to proceed"]);
+                return failed_response(["error" => "Unable to proceed"]);
             }
 
-            $user = Users::where(["album_id"=>$data['album']])->get();
-            if(! $user){
+            $user = Users::where(["album_id" => $data['album']])->get();
+            if (! $user) {
                 DB::rollBack();
-                return failed_response(["error"=>"user error"]);
+                return failed_response(["error" => "user error"]);
             }
-            $body = "Inactive album: ".env("APP_ROOT").$hashCode;
-            foreach($user as $k){
-                $sent = $mail->sendEmail($k['email'], "ALBUM", $body);
+            $body = "Inactive album: " . env("APP_ROOT") . $hashCode;
+            $checkAlbum = Album::where(["id" => $albumId, "status" => "live"])->first();
+            if ($checkAlbum) {
+                foreach ($user as $k) {
+                    $sent = $mail->sendEmail($k['email'], "ALBUM", $body);
+                }
             }
-            //
             $result = Album::where(["id" => $albumId])->update(["status" => "longterm"]);
             DB::commit();
             return success_response(["data" => $result]);
@@ -230,17 +232,18 @@ class AlbumController extends Controller
     }
 
 
-    public function checkAlbum($albumId){
-        try{
-            $result = Album::where(['id'=>$albumId])->first();
-            if(! $result){
-                return success_response(["message"=>"OK"]);
+    public function checkAlbum($albumId)
+    {
+        try {
+            $result = Album::where(['id' => $albumId])->first();
+            if (! $result) {
+                return success_response(["message" => "OK"]);
             }
-            return failed_response(["error"=>"Account is not live, unable to capture image"]);
-        }catch(Exception $e){
-            return error_response(["error"=>$e->getMessage()]);
-        }catch(TypeError $e){
-            return error_response(["error"=>$e->getMessage()]);
+            return failed_response(["error" => "Account is not live, unable to capture image"]);
+        } catch (Exception $e) {
+            return error_response(["error" => $e->getMessage()]);
+        } catch (TypeError $e) {
+            return error_response(["error" => $e->getMessage()]);
         }
     }
 }

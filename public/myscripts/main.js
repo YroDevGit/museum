@@ -257,7 +257,7 @@ capturebtn.addEventListener('click', function(){
         error: function(error){
             alert(error);
         }
-    })
+    });
 });
 
 
