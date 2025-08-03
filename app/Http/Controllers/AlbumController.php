@@ -186,4 +186,16 @@ class AlbumController extends Controller
         $this->helper("Hashing");
         return my_hash("SALT123".$albumId.$userId);
     }
+
+    public function logoutsession($albumId){
+        try{
+            $this->helper("Response");
+            $result = Album::where(["id"=>$albumId])->update(["status"=>"longterm"]);
+            return success_response(["data"=>$result]);
+        }catch(Exception $e){
+            return error_response(["error"=>$e->getMessage()]);
+        }catch(TypeError $e){
+            return error_response(["error"=>$e->getMessage()]);
+        }
+    }
 }

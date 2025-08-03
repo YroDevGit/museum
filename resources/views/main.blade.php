@@ -25,14 +25,14 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-    <link rel="stylesheet" href="{{asset("mycss/main.css")}}">
+    <link rel="stylesheet" href="{{ asset('mycss/main.css') }}">
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @include('includes.baseURL');
     <script>
-        const albumid = "{{$albumid}}";
-        const utoken = "{{$utoken}}";
+        const albumid = "{{ $albumid }}";
+        const utoken = "{{ $utoken }}";
     </script>
 
 </head>
@@ -45,25 +45,30 @@
         <div class="probootstrap-site-logo probootstrap-animate" data-animate-effect="fadeInLeft">
 
             <a href="index.html" class="mb-2 d-block probootstrap-logo">PHOTO-GRAPHED</a>
-            <p class="mb-0">Images here is not yet saved. to save images, click the image to open, when expanded press the image to save.</p>
+            <p class="mb-0">Images here is not yet saved. to save images, click the image to open, when expanded press
+                the image to save.</p>
         </div>
-        
+
         <div class="probootstrap-overflow">
             <nav class="probootstrap-nav">
                 <ul>
-                    <a href="{{ url('/cam/' . $userid . '/' . $albumid. '/'. $utoken) }}"><button
+                    <a href="{{ url('/cam/' . $userid . '/' . $albumid . '/' . $utoken) }}"><button
                             class="btn btn-primary">CAPTURE</button></a>
                 </ul>
             </nav>
             <footer class="probootstrap-aside-footer probootstrap-animate" data-animate-effect="fadeInLeft">
                 <ul class="list-unstyled d-flex probootstrap-aside-social">
-                    <li><a href="#" class="p-2" id="saveimg"><span class="fa-solid fa-download"></span></a></li>
+                    <li><a href="#" class="p-2" id="saveimg"><span class="fa-solid fa-download"></span></a>
+                    </li>
                     <li><a href="#" id="inviteusericon" class="p-2"><span
                                 class="fa-solid fa-user-plus"></span></a></li>
                     <li><a href="#" id="iconshare" class="p-2"><span class="fa-solid fa-qrcode"></span></a>
                     </li>
+                    <li><a id="logout" href="#" class="p-2"><span class="fa-solid fa-sign-out"></span></a>
+                    </li>
                 </ul>
-                <p>&copy; {{date('Y')}} <a href="https://uicookies.com/" target="_blank">Tyrone Malocon</a>. <br> All Rights
+                <p>&copy; {{ date('Y') }} <a href="https://uicookies.com/" target="_blank">Tyrone Malocon</a>. <br>
+                    All Rights
                     Reserved.</p>
             </footer>
         </div>
@@ -74,10 +79,14 @@
         <div class="probootstrap-bar">
             <a href="#" class="probootstrap-toggle js-probootstrap-toggle"><span class="oi oi-menu"></span></a>
             <div class="probootstrap-main-site-logo"><a
-                    href="#"><small>{{ explode(' ', $codename)[0] }}</small></a></a></div>
+                    href="#"><small>{{ explode(' ', $codename)[0] }}</small></a></a>
+            </div>
         </div>
         <div class="container-fluid">
-            <div class="row" id="cardcolumn" style="padding-top: 50px;"></div>
+            <div style="padding-top: 5px;">
+                <div align='right' style="padding:10px 0px;"><span id="refresh" class="fa-solid fa-refresh" style="font-size: 20px;"></span></div>
+                 <div class="row" id="cardcolumn" ></div>
+            </div>
         </div>
 
 
@@ -115,10 +124,11 @@
             <div class="img-body-v1">
                 <div>
                     <div>
-                       <label for="">Email: </label> 
+                        <label for="">Email: </label>
                     </div>
                     <div>
-                        <input class="form-control" style="width:300px;" type="text" id="emailadd" placeholder="Enter email...">
+                        <input class="form-control" style="width:300px;" type="text" id="emailadd"
+                            placeholder="Enter email...">
                     </div>
                 </div>
             </div>
@@ -141,11 +151,9 @@
 
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('jspost.js') }}"></script>
-    <script src="{{asset('myscripts/main.js')}}"></script>
+    <script src="{{ asset('myscripts/custom.js') }}"></script>
+    <script src="{{ asset('myscripts/main.js') }}"></script>
 
 </body>
 
-</html> 
-
-
-
+</html>

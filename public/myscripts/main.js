@@ -43,6 +43,11 @@ function loadAllImage() {
 //window initiated
 $(document).ready(function() {
     const albumcookie = localStorage.getItem("album");
+    const homeURL = localStorage.getItem("remote_id");
+    const remTOKEN = localStorage.getItem("remotetoken");
+    if(!homeURL && !remTOKEN){
+        window.location.href = baseURL+"/logout";return;
+    }
     if(! albumcookie || albumcookie == null || albumcookie == "null"){
         localStorage.setItem("album", "{{$albumid}}")
     }
@@ -189,3 +194,38 @@ function saveIMG(){
         }
     });
 }
+
+
+document.querySelector("#logout").addEventListener("click", function(){
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Proceed to logout?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "No, not right now",
+        confirmButtonText: "Okay, im already done",
+    }).then((action)=>{
+        if(action.isConfirmed){
+            const albumid = localStorage.getItem("album");
+            mypost({
+                url: apiURL+`/logoutSession/${albumid}`,
+                method: "GET",
+                success: function(response){
+                    if(response.code == 200){
+                        window.location.href = baseURL+"/logout";
+                    }else{
+                        console.log(response.message??"Failed");
+                    }
+                },
+                error: function(error){
+                    console.log(error.message ?? "Error");
+                }
+            })
+        }
+    });
+});
+
+
+refresh.addEventListener("click", function(){
+    window.location.reload();
+})

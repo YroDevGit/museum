@@ -66,8 +66,8 @@ uploadBtn.addEventListener('click', () => {
         },
         data: JSON.stringify({
             image: imageData,
-            user_id: '{{ $userid }}',
-            album_id: '{{ $albumid }}',
+            user_id: `${USERID}`,
+            album_id: `${ALBUMID}`,
             remote_id: remid
         }),
         success: function (response) {

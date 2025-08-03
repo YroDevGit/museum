@@ -10,6 +10,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{{asset('mycss/cam.css')}}">
     @include('includes.baseURL')
+    <script>
+        const USERID = "{{ $userid }}";
+        const ALBUMID = "{{ $albumid }}";
+    </script>
 </head>
 
 <body>

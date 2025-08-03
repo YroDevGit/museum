@@ -12,6 +12,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{{asset('mycss/scan.css')}}">
     @include('includes.baseURL')
+    <script>
+        const loggedOut = "{{$logout??'no'}}";
+    </script>
 </head>
 
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
@@ -48,7 +51,9 @@
 
     <script src="jquery-3.6.0.min.js"></script>
     <script src="{{asset('jspost.js')}}"></script>
+    <script src="{{asset('myscripts/custom.js')}}"></script>
     <script src="{{asset('myscripts/scan.js')}}"></script>
+    
 </body>
 
 </html>

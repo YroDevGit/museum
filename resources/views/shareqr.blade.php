@@ -17,7 +17,8 @@
         </div>
         <input type="hidden" value="{{'photographer/remote'.'/'.$remote.'/'."$token"."?shared=yes"}}" id="qrText" placeholder="Enter text or URL" />
         <button id="toclickqr" style="display: none" onclick="generateQRCode()">Generate QR Code</button>
-        <p><span>Share QR to your friend to share album</span></p>
+        <p><span>Scan this QR code to open the same live album on a
+different phone</span></p>
         <div class="qr-container">
             <canvas id="qrCanvas"></canvas>
         </div>

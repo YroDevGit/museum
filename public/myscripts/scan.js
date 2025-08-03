@@ -1,30 +1,18 @@
 //reset cookies
-function resetCookies() {
-    localStorage.removeItem("contentToken");
-    localStorage.removeItem("homeurl");
-    localStorage.removeItem("remote_id");
-    localStorage.removeItem("mainIMGID");
-    localStorage.removeItem("loggedin");
-    localStorage.removeItem("album");
-    localStorage.removeItem("shared");
-    localStorage.removeItem("remotetoken");
-}
-
-
-
 window.addEventListener("DOMContentLoaded", function () {
-    const logout = "{{$logout??'no'}}";
+    const logout = loggedOut;
+    let lg = 0;
     if (logout && logout == "yes") {
+        lg = 1;
         resetCookies();
     }
     const hmurl = localStorage.getItem("homeurl");
     const albm = localStorage.getItem("album");
-    if (hmurl && albm) {
+    if (hmurl && albm && lg==0) {
         window.location.href = `${baseURL}${hmurl}`; return;
     }
     resetCookies();
-
-})
+});
 const startScanButton = document.getElementById('start-scan-button');
 const stopScanButton = document.getElementById('stop-scan-button');
 const readerDiv = document.getElementById('reader');

@@ -38,13 +38,16 @@ document.addEventListener('DOMContentLoaded', function () {
         mypost({
             url: apiURL+url,
             method: "POST",
-            data: {
+            data: JSON.stringify({
                 name: name,
                 email: email,
                 venue_id: venue,
                 remote_id: localStorage.getItem("remote_id")
-            },
+            }),
             success: function (response) {
+                if(response.code != 200){
+                    alert(response.details.error);return;
+                }
                 const data = response?.details?.data;
                 const albums = data.albums;
                 const users = data.users;

@@ -162,10 +162,6 @@
         <div class="img-actions">
             <button class="save" onclick="document.getElementById('fullimg').style.display='none';">Close</button>
             <button class="delete" id="delIMG">Delete</button>
-            <p style="padding: 7px; color:white;">
-                <span>long click on the image
-                    and click save to camera roll</span>
-            </p>
         </div>
     </div>
 
@@ -311,7 +307,7 @@
 <script>
     downloadzip.addEventListener("click", function() {
         const album = localStorage.getItem("album");
-        window.location.href = `{{ url('') }}/download/${album}`;
+        window.location.href = `{{ url('') }}/api/download/${album}`;
     });
 
     document.getElementById('galleryback').addEventListener("click", function() {
