@@ -33,6 +33,8 @@
     <script>
         const albumid = "{{ $albumid }}";
         const utoken = "{{ $utoken }}";
+        const userID = "{{$userid}}";
+        const captureID = "{{ url('/cam/' . $userid . '/' . $albumid . '/' . $utoken) }}";
     </script>
 
 </head>
@@ -52,7 +54,7 @@
         <div class="probootstrap-overflow">
             <nav class="probootstrap-nav">
                 <ul>
-                    <a href="{{ url('/cam/' . $userid . '/' . $albumid . '/' . $utoken) }}"><button
+                    <a href="#" id="capturebtn"><button
                             class="btn btn-primary">CAPTURE</button></a>
                 </ul>
             </nav>

@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\File;
 use App\Models\Capture;
 use App\Models\Remote;
 use Illuminate\Support\Facades\DB;
+use App\Models\cookies;
+use App\Services\mailServices;
+use Mockery\Matcher\Type;
 
 class AlbumController extends Controller
 {
@@ -63,10 +66,10 @@ class AlbumController extends Controller
 
             $albumid = $album->id;
             $userid = $users->id;
-            $myhash = my_hash("SALT123".$albumid.$userid);
+            $myhash = my_hash("SALT123" . $albumid . $userid);
 
             DB::commit();
-            return success_response(["data" => ["users" => $users, "albums" => $album, "user_id"=>$userid, "album_id"=>$albumid, "hometoken"=>$myhash]]);
+            return success_response(["data" => ["users" => $users, "albums" => $album, "user_id" => $userid, "album_id" => $albumid, "hometoken" => $myhash]]);
         } catch (Exception $e) {
             DB::rollBack();
             return error_response(["error" => $e->getMessage()]);
@@ -82,9 +85,9 @@ class AlbumController extends Controller
         $this->helper("Hashing");
         $id =  $remote;
         $shared = $req->has("shared");
-        $ctoken = my_hash("SALT123".$remote);
-        if($token !== $ctoken){
-            return failed_response(["error"=>"Invalid token"]);
+        $ctoken = my_hash("SALT123" . $remote);
+        if ($token !== $ctoken) {
+            return failed_response(["error" => "Invalid token"]);
         }
 
         try {
@@ -92,16 +95,16 @@ class AlbumController extends Controller
                 return failed_response(["error" => "Param remote id and token is required"]);
             }
 
-            $rem = Remote::where(["id"=>$id])->first();
-            if(! $rem){
-               return failed_response(["error" => "Remote not found!"]); 
+            $rem = Remote::where(["id" => $id])->first();
+            if (! $rem) {
+                return failed_response(["error" => "Remote not found!"]);
             }
             $result = Album::where(["remote_id" => $id, "status" => "live"])->first();
             if ($result && !$shared) {
                 return failed_response(["error" => "This device is already in use"]);
             }
 
-            return success_response(["data" => "REMOTE IS READY", "remote" => $id, "shared"=>$shared, "album"=>$result, "remotetoken"=>$ctoken]);
+            return success_response(["data" => "REMOTE IS READY", "remote" => $id, "shared" => $shared, "album" => $result, "remotetoken" => $ctoken]);
         } catch (TypeError $e) {
             return error_response(["error" => $e->getMessage()]);
         } catch (Exception $e) {
@@ -182,16 +185,58 @@ class AlbumController extends Controller
     }
 
 
-    public function validateUserAlbum($userId, $albumId){
+    public function validateUserAlbum($userId, $albumId)
+    {
         $this->helper("Hashing");
-        return my_hash("SALT123".$albumId.$userId);
+        return my_hash("SALT123" . $albumId . $userId);
     }
 
-    public function logoutsession($albumId){
-        try{
+    public function logoutsession(Request $req, mailServices $mail, $albumId)
+    {
+        try {
+            DB::beginTransaction();
             $this->helper("Response");
-            $result = Album::where(["id"=>$albumId])->update(["status"=>"longterm"]);
-            return success_response(["data"=>$result]);
+            $this->helper("Hashing");
+            $data = $req->all();
+            $hashCode = my_hash("SALT123" . $data['album'] . $data['user']);
+            $data['token'] = $hashCode;
+            $data['date_created'] = now();
+            $result = cookies::create($data);
+            if (! $result) {
+                DB::rollBack();
+                return failed_response(["error"=>"Unable to proceed"]);
+            }
+
+            $user = Users::where(["album_id"=>$data['album']])->get();
+            if(! $user){
+                DB::rollBack();
+                return failed_response(["error"=>"user error"]);
+            }
+            $body = "Inactive album: ".env("APP_ROOT").$hashCode;
+            foreach($user as $k){
+                $sent = $mail->sendEmail($k['email'], "ALBUM", $body);
+            }
+            //
+            $result = Album::where(["id" => $albumId])->update(["status" => "longterm"]);
+            DB::commit();
+            return success_response(["data" => $result]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return error_response(["error" => $e->getMessage()]);
+        } catch (TypeError $e) {
+            DB::rollBack();
+            return error_response(["error" => $e->getMessage()]);
+        }
+    }
+
+
+    public function checkAlbum($albumId){
+        try{
+            $result = Album::where(['id'=>$albumId])->first();
+            if(! $result){
+                return success_response(["message"=>"OK"]);
+            }
+            return failed_response(["error"=>"Account is not live, unable to capture image"]);
         }catch(Exception $e){
             return error_response(["error"=>$e->getMessage()]);
         }catch(TypeError $e){

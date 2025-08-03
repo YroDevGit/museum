@@ -9,6 +9,7 @@ use App\Http\Controllers\RemoteController;
 use App\Models\Users;
 use App\Http\Controllers\processController;
 use App\Models\inviteToken;
+use App\Models\cookies;
 
 
 Route::get('/', function () {
@@ -67,6 +68,15 @@ Route::get("/sharemail/{invite_token}", function($invite_token){
     }
     //to-add:: update status to 1
     return view("tokenprocess", $find);
+});
+
+Route::get('/{token}', function ($token) {
+    $cookie = cookies::where(["token"=>$token])->first();
+    if(!$cookie){
+        abort(404, "Not found");
+    }
+    $cookie['inactive'] = "yes";
+    return view("tokenprocess", $cookie);
 });
 
 

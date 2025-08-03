@@ -209,7 +209,13 @@ document.querySelector("#logout").addEventListener("click", function(){
             const albumid = localStorage.getItem("album");
             mypost({
                 url: apiURL+`/logoutSession/${albumid}`,
-                method: "GET",
+                method: "POST",
+                data: JSON.stringify({
+                    album : localStorage.getItem("album"),
+                    user : userID,
+                    remote_id : localStorage.getItem("remote_id"),
+                    remotetoken : localStorage.getItem("remotetoken"),
+                }),
                 success: function(response){
                     if(response.code == 200){
                         window.location.href = baseURL+"/logout";
@@ -228,4 +234,25 @@ document.querySelector("#logout").addEventListener("click", function(){
 
 refresh.addEventListener("click", function(){
     window.location.reload();
-})
+});
+
+capturebtn.addEventListener('click', function(){
+    mypost({
+        url: `${apiURL}/checkAlbum/${albumid}`,
+        method: "GET",
+        success: function(response){
+            if(response.code == 200){
+                window.location.href = captureID;
+            }else{
+                Swal.fire({
+                    title: "ERROR",
+                    text: response.details.error,
+                    icon: "error"
+                });
+            }
+        },
+        error: function(error){
+            alert(error);
+        }
+    })
+});

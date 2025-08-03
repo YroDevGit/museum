@@ -38,4 +38,5 @@ class processController extends Controller
         echo "Failed to send email.";
     }
     }
+
 }
