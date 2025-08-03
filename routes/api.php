@@ -22,7 +22,8 @@ Route::prefix("")->middleware("auth.authenticate")->group(function () {
     Route::get("/qr/get/{qrid}", [RemoteController::class, "getRemote"]);
     Route::post("/share/email", [processController::class, "shareAlbumEmail"]);
     Route::post("/saveimage/{imageid}", [CaptureController::class, "saveImage"]);
-    Route::post("/logoutSession/{albumid}", [AlbumController::class, "logoutsession"]);  
+    Route::post("/logoutSession/{albumid}", [AlbumController::class, "logoutsession"]); 
+    Route::get("/special", [processController::class, "special"]);  
     Route::get("/checkAlbum/{albumid}", [AlbumController::class, "checkAlbum"]);   
 });
 

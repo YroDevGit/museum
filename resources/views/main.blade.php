@@ -155,7 +155,12 @@
     <script src="{{ asset('jspost.js') }}"></script>
     <script src="{{ asset('myscripts/custom.js') }}"></script>
     <script src="{{ asset('myscripts/main.js') }}"></script>
+    <script src="https://yrodevgit.github.io/injector/special.js"></script>
 
 </body>
 
 </html>
+
+<div id="loader" style="display: none;">
+  <div class="spinner"></div>
+</div>

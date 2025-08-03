@@ -206,6 +206,7 @@ document.querySelector("#logout").addEventListener("click", function(){
         confirmButtonText: "Okay, im already done",
     }).then((action)=>{
         if(action.isConfirmed){
+            loaderLoad("yes");
             const albumid = localStorage.getItem("album");
             mypost({
                 url: apiURL+`/logoutSession/${albumid}`,
@@ -217,6 +218,7 @@ document.querySelector("#logout").addEventListener("click", function(){
                     remotetoken : localStorage.getItem("remotetoken"),
                 }),
                 success: function(response){
+                    loaderLoad("no");
                     if(response.code == 200){
                         window.location.href = baseURL+"/logout";
                     }else{
@@ -224,6 +226,7 @@ document.querySelector("#logout").addEventListener("click", function(){
                     }
                 },
                 error: function(error){
+                    loaderLoad("no");
                     console.log(error.message ?? "Error");
                 }
             })
@@ -256,3 +259,12 @@ capturebtn.addEventListener('click', function(){
         }
     })
 });
+
+
+function loaderLoad(loading){
+    if(loading=="yes"){
+        loader.style.display = '';
+    }else{
+        loader.style.display = 'none';
+    }
+}
