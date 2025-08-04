@@ -22,7 +22,7 @@ function generateQRCode() {
                 qr.value = qrtextresult;
                 console.log(qrtextresult);
             } else {
-                alert(response.message);
+                alert(response.details.error);
             }
         },
         error: function (error) {

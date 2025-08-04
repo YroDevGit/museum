@@ -22,7 +22,7 @@
     <script src="{{ asset('jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('jspost.js') }}"></script>
 
-    <script src="{{asset('myscript/qrgen.js')}}"></script>
+    <script src="{{asset('myscripts/qrgen.js')}}"></script>
 </body>
 
 </html>

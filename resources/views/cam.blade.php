@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Responsive Camera App with Upload</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="{{asset('mycss/cam.css')}}">
+    <link rel="stylesheet" href="{{ asset('mycss/cam.css') }}">
     @include('includes.baseURL')
     <script>
         const USERID = "{{ $userid }}";
@@ -22,6 +23,7 @@
         <button id="backBtn">←</button>
         <video id="video" autoplay playsinline></video>
         <button id="captureBtn">📸</button>
+        <button id="flipBtn" class="fas fa-camera-rotate"></button>
         <img id="thumbnail" alt="Captured" />
         <canvas id="canvas"></canvas>
     </div>
@@ -33,8 +35,8 @@
     </div>
 
     <script src="{{ asset('jquery-3.6.0.min.js') }}"></script>
-    <script src="{{asset('jspost.js')}}"></script>
-    <script src="{{asset('myscripts/cam.js')}}"></script>
+    <script src="{{ asset('jspost.js') }}"></script>
+    <script src="{{ asset('myscripts/cam.js') }}"></script>
 </body>
 
 </html>

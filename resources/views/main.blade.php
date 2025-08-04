@@ -60,13 +60,13 @@
             </nav>
             <footer class="probootstrap-aside-footer probootstrap-animate" data-animate-effect="fadeInLeft">
                 <ul class="list-unstyled d-flex probootstrap-aside-social">
-                    <li><a href="#" class="p-2" id="saveimg"><span class="fa-solid fa-download"></span></a>
+                    <li><a href="#" class="p-2" id="saveimg" title="Saved Images"><span class="fa-solid fa-download"></span></a>
                     </li>
-                    <li><a href="#" id="inviteusericon" class="p-2"><span
+                    <li><a href="#" id="inviteusericon" class="p-2" title="Invite user"><span
                                 class="fa-solid fa-user-plus"></span></a></li>
-                    <li><a href="#" id="iconshare" class="p-2"><span class="fa-solid fa-qrcode"></span></a>
+                    <li><a href="#" id="iconshare" class="p-2" title="Invite QR"><span class="fa-solid fa-qrcode"></span></a>
                     </li>
-                    <li><a id="logout" href="#" class="p-2"><span class="fa-solid fa-sign-out"></span></a>
+                    <li><a title="Logout" id="logout" href="#" class="p-2"><span class="fa-solid fa-sign-out"></span></a>
                     </li>
                 </ul>
                 <p>&copy; {{ date('Y') }} <a href="#" target="_blank">Tyrone Malocon</a>. <br>

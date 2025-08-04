@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scan QR</title>
+    <title>Scan Remote</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="{{ asset('mycss/scan.css') }}">
+    
+    <link rel="shortcut icon" href="ico.png" type="image/x-icon">
     @include('includes.baseURL')
     <script>
         const loggedOut = "{{ $logout ?? 'no' }}";
@@ -54,7 +55,7 @@
 
     <footer class="w-full text-center bg-white py-4 border-t border-gray-300 shadow-inner">
         <p class="text-sm text-gray-500">
-            © 2025 TyroneLeeEmz. All rights reserved.
+            © 2025 CodeYro. All rights reserved.
         </p>
     </footer>
 

@@ -1,4 +1,4 @@
-//initialize elements
+// initialize elements
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const captureBtn = document.getElementById('captureBtn');
@@ -8,18 +8,53 @@ const modalImage = document.getElementById('modalImage');
 const modalClose = document.getElementById('modalClose');
 const uploadBtn = document.getElementById('uploadBtn');
 const backBtn = document.getElementById('backBtn');
+const flipBtn = document.getElementById('flipBtn'); // New flip button
 
-// Start camera
-navigator.mediaDevices.getUserMedia({
-    video: true
-})
-    .then(stream => {
+let currentFacingMode = "environment"; // back camera default
+let currentStream = null;
+
+// Start camera with facingMode
+async function startCamera(facingMode = "environment") {
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+    }
+
+    try {
+        const constraints = {
+            video: {
+                facingMode: { exact: facingMode }
+            }
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        currentStream = stream;
         video.srcObject = stream;
-    })
-    .catch(err => {
-        alert("Camera access denied.");
-        console.error(err);
-    });
+    } catch (err) {
+        console.warn("Exact facingMode failed, trying ideal fallback.");
+        try {
+            const fallbackConstraints = {
+                video: {
+                    facingMode: { ideal: facingMode }
+                }
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(fallbackConstraints);
+            currentStream = stream;
+            video.srcObject = stream;
+        } catch (err2) {
+            alert("Camera access denied or unsupported.");
+            console.error(err2);
+        }
+    }
+}
+
+// Start default camera on load
+startCamera(currentFacingMode);
+
+// Flip camera on click
+flipBtn.addEventListener('click', () => {
+    currentFacingMode = currentFacingMode === "environment" ? "user" : "environment";
+    startCamera(currentFacingMode);
+});
 
 // Capture frame
 captureBtn.addEventListener('click', () => {
@@ -59,7 +94,7 @@ uploadBtn.addEventListener('click', () => {
     const remid = localStorage.getItem("remote_id");
 
     mypost({
-        url: apiURL+"/upload",
+        url: apiURL + "/upload",
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -91,36 +126,34 @@ uploadBtn.addEventListener('click', () => {
             });
         }
     });
-
 });
 
-
-//Back to home album gallery
+// Back to home album gallery
 backBtn.addEventListener('click', () => {
     const home = localStorage.getItem("homeurl");
     window.location.href = `${baseURL}` + home;
 });
 
-
-window.addEventListener("DOMContentLoaded", function(){
-const alb = localStorage.getItem("album");
-mypost({
+// Check album on load
+window.addEventListener("DOMContentLoaded", function () {
+    const alb = localStorage.getItem("album");
+    mypost({
         url: `${apiURL}/checkAlbum/${alb}`,
         method: "GET",
-        success: function(response){
-            if(response.code == 200){
-                //Proceed
-            }else{
+        success: function (response) {
+            if (response.code == 200) {
+                // Proceed
+            } else {
                 Swal.fire({
                     title: "ERROR",
                     text: response.details.error,
                     icon: "error"
-                }).then(()=>{
+                }).then(() => {
                     window.location.href = localStorage.getItem("homeurl");
                 });
             }
         },
-        error: function(error){
+        error: function (error) {
             alert(error);
         }
     });
