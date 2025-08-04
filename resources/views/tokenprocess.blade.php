@@ -1,5 +1,5 @@
 
-@if ($inactive)
+@if ($inactive ?? false)
 <script>
     localStorage.setItem("album", "{{$album}}");
     localStorage.setItem("remote_id", "{{$remote_id}}");

@@ -5,7 +5,6 @@ if (alreadyRegistered && alreadyRegistered !== null && alreadyRegistered !== "nu
     window.location.href = baseURL + alreadyRegistered;
 }
 
-
 // form loaded
 document.addEventListener('DOMContentLoaded', function () {
     const sharedAlbum = localStorage.getItem("shared");
@@ -23,17 +22,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const email = emailInput.value.trim();
         const venue = localStorage.getItem('venue');
 
-        if (!name || !email || !venue) {
+        if (!name || !email) {
             formMessage.textContent = 'Please fill in all fields.';
             formMessage.className = 'mt-4 text-center text-sm font-medium text-red-600';
             return;
         }
-
         let url = "/photographer/add"
         if (sharedAlbum == "true") {
             url = "/photographer/invited/" + albumID;
         }
-
         mypost({
             url: apiURL+url,
             method: "POST",
