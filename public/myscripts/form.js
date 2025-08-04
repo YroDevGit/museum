@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const detailsForm = document.getElementById('details-form');
     const nameInput = document.getElementById('name-input');
     const emailInput = document.getElementById('email-input');
-    const venueSelect = document.getElementById('venue-select');
     const formMessage = document.getElementById('form-message');
 
     detailsForm.addEventListener('submit', function () {
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const name = nameInput.value.trim();
         const email = emailInput.value.trim();
-        const venue = venueSelect.value;
+        const venue = localStorage.getItem('venue');
 
         if (!name || !email || !venue) {
             formMessage.textContent = 'Please fill in all fields.';
@@ -55,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const user_id = users.id;
                 const hometoken = data.hometoken;
                 localStorage.setItem("album", album_id);
+                localStorage.removeItem("venue");
                 if (response.code == 200) {
                     Swal.fire({
                         title: "SUCCESS",

@@ -15,4 +15,5 @@ function resetCookies() {
     localStorage.removeItem("album");
     localStorage.removeItem("shared");
     localStorage.removeItem("remotetoken");
+    localStorage.removeItem("venue");
 }

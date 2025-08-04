@@ -104,7 +104,7 @@ class AlbumController extends Controller
                 return failed_response(["error" => "This device is already in use"]);
             }
 
-            return success_response(["data" => "REMOTE IS READY", "remote" => $id, "shared" => $shared, "album" => $result, "remotetoken" => $ctoken]);
+            return success_response(["data" => "REMOTE IS READY", "remote" => $id, "shared" => $shared, "album" => $result, "remotetoken" => $ctoken, "rem"=>$rem]);
         } catch (TypeError $e) {
             return error_response(["error" => $e->getMessage()]);
         } catch (Exception $e) {
@@ -235,7 +235,7 @@ class AlbumController extends Controller
     public function checkAlbum($albumId)
     {
         try {
-            $result = Album::where(['id' => $albumId])->first();
+            $result = Album::where(['id' => $albumId, "status"=>"longterm"])->first();
             if (! $result) {
                 return success_response(["message" => "OK"]);
             }

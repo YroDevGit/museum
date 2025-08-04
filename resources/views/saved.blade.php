@@ -24,10 +24,14 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
+    <link rel="stylesheet" href="{{ asset('mycss/saved.css') }}">
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('includes.baseURL');
 
+    <script>
+        const albumID = "{{ $albumid }}";
+    </script>
 
 </head>
 
@@ -41,7 +45,7 @@
             <a href="index.html" class="mb-2 d-block probootstrap-logo">SAVED IMAGES</a>
 
         </div>
-        
+
         <div class="probootstrap-overflow">
             <nav class="probootstrap-nav">
                 <ul>
@@ -56,7 +60,7 @@
                 <ul class="list-unstyled d-flex probootstrap-aside-social">
 
                 </ul>
-                <p>&copy; {{ date('Y') }} <a href="https://uicookies.com/" target="_blank">Tyrone Malocon</a>. <br>
+                <p>&copy; {{ date('Y') }} <a href="#" target="_blank">Tyrone Malocon</a>. <br>
                     All Rights
                     Reserved.</p>
             </footer>
@@ -81,80 +85,13 @@
                     <ul class="list-unstyled d-flex probootstrap-aside-social">
 
                     </ul>
-                    <p>&copy; 2017 <a href="https://uicookies.com/" target="_blank">uiCookies:Aside</a>. <br> All
-                        Rights Reserved. Designed by <a href="https://uicookies.com/" target="_blank">uicookies.com</a>
+                    <p>&copy; 2017 <a href="#" target="_blank">TyroneLeeEmz</a>. <br> All
+                        Rights Reserved. Designed by <a href="#" target="_blank">TyroneLeeEmz</a>
                     </p>
                 </div>
             </div>
         </div>
-
     </main>
-
-    <style>
-        .full-img {
-            position: fixed;
-            /* changed to fixed */
-            top: 0;
-            left: 0;
-            background: rgba(0, 0, 0, 0.7);
-            height: 100%;
-            width: 100%;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            overflow: auto;
-            padding: 1rem;
-            box-sizing: border-box;
-        }
-
-        .img-body-v1 {
-            max-width: 100%;
-            max-height: 100%;
-            text-align: center;
-        }
-
-        #fullimg1 {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
-
-        .img-actions {
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .img-actions button {
-            margin: 0 10px;
-            padding: 8px 16px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .img-actions button.save {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .img-actions button.delete {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .img-actions button.invite {
-            background-color: #035eb4;
-            color: white;
-        }
-
-        #galleryback, #downloadzip {
-            cursor: pointer;
-        }
-    </style>
-
     <div class="full-img" id="fullimg" style="display: none;">
         <div class="img-body-v1">
             <img id="fullimg1" src="/dad.jpg" alt="Preview" />
@@ -185,7 +122,6 @@
         </div>
     </div>
 
-
     <script src="{{ asset('js/jquery-3.2.1.slim.min.js') }}"></script>
     <script src="{{ asset('jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
@@ -193,124 +129,8 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/jquery.waypoints.min.js') }}"></script>
     <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}"></script>
-
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('jspost.js') }}"></script>
-
-
-    <script>
-        $(document).ready(function() {
-            const albumcookie = localStorage.getItem("album");
-            if (!albumcookie || albumcookie == null || albumcookie == "null") {
-                localStorage.setItem("album", "{{ $albumid }}")
-            }
-            localStorage.removeItem("contentToken");
-            loadAllImage();
-            setInterval(() => {
-                loadAllImage();
-            }, 7000);
-        });
-    </script>
-
-    <script>
-        function loadAllImage() {
-            mypost({
-                url: '{{ url("/api/upload/$albumid?saved=yes") }}',
-                method: "GET",
-                success: function(response) {
-                    const data = response?.details?.data ?? [];
-                    const updates = response?.details?.data ?? [];
-                    const currentContent = localStorage.getItem("contentToken") ?? "";
-                    const newUpdate = JSON.stringify(updates);
-                    if (currentContent === newUpdate) {
-                        return;
-                    }
-                    localStorage.setItem("contentToken", newUpdate);
-
-                    document.querySelector("#cardcolumn").innerHTML = '';
-                    data.forEach(column => {
-                        console.log(column);
-                        document.querySelector("#cardcolumn").insertAdjacentHTML(
-                            'beforeend', `
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                                <div class="card img-loaded">
-                                    <a onclick="displayIMG('{{ url('') }}/${column.image_path}', '${column.id}')">
-                                        <img class="card-img-top probootstrap-animate fadeInUp probootstrap-animated" src="{{ url('') }}/${column.image_path}" alt="Card image cap">
-                                    </a>
-                                </div>
-                            </div>
-                            `);
-                    });
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        }
-    </script>
-
-    <script>
-        function displayIMG(img, imgid) {
-            document.getElementById('fullimg').style.display = '';
-            document.getElementById('fullimg1').src = img;
-            localStorage.setItem("mainIMGID", imgid);
-        }
-    </script>
-
-
-
-    <script>
-        document.querySelector("#delIMG").addEventListener("click", function() {
-            Swal.fire({
-                title: "Are you sure",
-                text: "are you sure to delete selected image?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Okay, delete it.!"
-            }).then((res) => {
-                if (res.isConfirmed) {
-                    const imgID = localStorage.getItem("mainIMGID");
-                    mypost({
-                        url: `{{ url('/api/img/delete') }}/${imgID}`,
-                        method: "DELETE",
-                        success: function(response) {
-                            if (response.code == 200) {
-                                Swal.fire({
-                                    title: "SUCCESS",
-                                    text: "Capture deleted",
-                                    icon: "success"
-                                }).then(() => {
-                                    window.location.reload();
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: "ERROR",
-                                    text: response.message,
-                                    icon: "error"
-                                });
-                            }
-                        },
-                        error: function(error) {
-                            console.log(response);
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-
+    <script src="{{ asset('myscripts/saved.js') }}"></script>
 </body>
-
 </html>
-
-
-<script>
-    downloadzip.addEventListener("click", function() {
-        const album = localStorage.getItem("album");
-        window.location.href = `{{ url('') }}/api/download/${album}`;
-    });
-
-    document.getElementById('galleryback').addEventListener("click", function() {
-        window.location.href = "{{ url('') }}" + localStorage.getItem("homeurl");
-    })
-</script>

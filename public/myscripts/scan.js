@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
     const hmurl = localStorage.getItem("homeurl");
     const albm = localStorage.getItem("album");
-    if (hmurl && albm && lg==0) {
+    if (hmurl && albm && lg == 0) {
         window.location.href = `${baseURL}${hmurl}`; return;
     }
     resetCookies();
@@ -31,7 +31,6 @@ async function startScanner() {
         statusMessage.innerText = "Scanner is already running.";
         return;
     }
-
     try {
         // Request camera access
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
@@ -132,6 +131,10 @@ function checkQR(decoded) {
                 }
                 const albumid = response?.details?.album?.id ?? null;
                 const remotetoken = response?.details?.remotetoken ?? null;
+                const venueID = response?.details?.rem?.venue_id;
+                if(! venueID){
+                    alert("VENUE NOT FOUND.!");return;
+                }
 
                 Swal.fire({
                     title: "SUCCESS",
@@ -142,6 +145,7 @@ function checkQR(decoded) {
                     localStorage.setItem("shared", shared);
                     localStorage.setItem("album", albumid);
                     localStorage.setItem("remotetoken", remotetoken);
+                    localStorage.setItem("venue", venueID);
                     window.location.href = baseURL + "/register?rem=" + remote + "&shared=" + shared;
                 });
                 return;

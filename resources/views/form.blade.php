@@ -42,7 +42,7 @@
                 <input type="email" id="email-input" name="email" placeholder="your.email@example.com"
                     class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out">
             </div>
-            <div>
+            <div style="display :none">
                 <label for="venue-select" class="block text-gray-700 text-sm font-bold mb-2">Venue:</label>
                 <select id="venue-select" name="venue"
                     class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out">

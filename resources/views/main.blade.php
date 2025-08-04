@@ -69,7 +69,7 @@
                     <li><a id="logout" href="#" class="p-2"><span class="fa-solid fa-sign-out"></span></a>
                     </li>
                 </ul>
-                <p>&copy; {{ date('Y') }} <a href="https://uicookies.com/" target="_blank">Tyrone Malocon</a>. <br>
+                <p>&copy; {{ date('Y') }} <a href="#" target="_blank">Tyrone Malocon</a>. <br>
                     All Rights
                     Reserved.</p>
             </footer>
@@ -98,8 +98,8 @@
                     <ul class="list-unstyled d-flex probootstrap-aside-social">
 
                     </ul>
-                    <p>&copy; 2017 <a href="https://uicookies.com/" target="_blank">uiCookies:Aside</a>. <br> All
-                        Rights Reserved. Designed by <a href="https://uicookies.com/" target="_blank">uicookies.com</a>
+                    <p>&copy; 2017 <a href="#" target="_blank">TyroneLeeEmz</a>. <br> All
+                        Rights Reserved. Designed by <a href="#" target="_blank">TyroneLeeEmz</a>
                     </p>
                 </div>
             </div>
