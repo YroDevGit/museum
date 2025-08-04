@@ -1,5 +1,5 @@
 //Hide image modal
-inviteusericon.addEventListener("click", function() {
+inviteusericon.addEventListener("click", function () {
     fullemail.style.display = "";
 });
 
@@ -9,7 +9,7 @@ function loadAllImage() {
     mypost({
         url: `${apiURL}/upload/${albumid}`,
         method: "GET",
-        success: function(response) {
+        success: function (response) {
             const data = response?.details?.data ?? [];
             const updates = response?.details?.data ?? [];
             const currentContent = localStorage.getItem("contentToken") ?? "";
@@ -34,21 +34,21 @@ function loadAllImage() {
                     `);
             });
         },
-        error: function(error) {
+        error: function (error) {
             console.log(error);
         }
     });
 }
 
 //window initiated
-$(document).ready(function() {
+$(document).ready(function () {
     const albumcookie = localStorage.getItem("album");
     const homeURL = localStorage.getItem("remote_id");
     const remTOKEN = localStorage.getItem("remotetoken");
-    if(!homeURL && !remTOKEN){
-        window.location.href = baseURL+"/logout";return;
+    if (!homeURL && !remTOKEN) {
+        window.location.href = baseURL + "/logout"; return;
     }
-    if(! albumcookie || albumcookie == null || albumcookie == "null"){
+    if (!albumcookie || albumcookie == null || albumcookie == "null") {
         localStorage.setItem("album", "{{$albumid}}")
     }
     localStorage.setItem("homeurl", window.location.pathname);
@@ -67,7 +67,7 @@ function displayIMG(img, imgid) {
 }
 
 //share
-document.querySelector("#iconshare").addEventListener("click", function() {
+document.querySelector("#iconshare").addEventListener("click", function () {
     const remoteID = localStorage.getItem("remote_id");
     const token = localStorage.getItem("remotetoken");
     window.location.href = `${baseURL}/shareqr/` + remoteID + "/" + token;
@@ -75,7 +75,7 @@ document.querySelector("#iconshare").addEventListener("click", function() {
 
 
 //Delete image
-document.querySelector("#delIMG").addEventListener("click", function() {
+document.querySelector("#delIMG").addEventListener("click", function () {
     Swal.fire({
         title: "Are you sure",
         text: "are you sure to delete selected image?",
@@ -88,7 +88,7 @@ document.querySelector("#delIMG").addEventListener("click", function() {
             mypost({
                 url: `${apiURL}/img/delete/${imgID}`,
                 method: "DELETE",
-                success: function(response) {
+                success: function (response) {
                     if (response.code == 200) {
                         Swal.fire({
                             title: "SUCCESS",
@@ -105,7 +105,7 @@ document.querySelector("#delIMG").addEventListener("click", function() {
                         });
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log(response);
                 }
             });
@@ -114,36 +114,42 @@ document.querySelector("#delIMG").addEventListener("click", function() {
 });
 
 //Invite friends to album
-invitebtn.addEventListener("click", function(){
+invitebtn.addEventListener("click", function () {
     invitebtn = true;
     const email = emailadd.value;
-    if(email==null || email == ""){
+    if (email == null || email == "") {
         Swal.fire({
             title: "Failed",
             text: "email field is required",
             icon: "error"
-        });return;
+        }); return;
     }
-
+    loaderLoad("yes");
     mypost({
         url: `${apiURL}/share/email`,
-        method:"POST",
-        data:JSON.stringify({
+        method: "POST",
+        data: JSON.stringify({
             email: email.trim(),
             remote: localStorage.getItem("remote_id"),
             album: localStorage.getItem("album"),
             remtoken: localStorage.getItem("remotetoken")
         }),
-        success: function(response){
-            Swal.fire({
-                title: "SUCCESS",
-                text: `An invite email was sent to ${email.trim()}`,
-                icon: "success"
-            }).then(()=>{
-                window.location.reload();
-            });
+        success: function (response) {
+            loaderLoad("no");
+            if (response.code == 200) {
+                Swal.fire({
+                    title: "SUCCESS",
+                    text: `An invite email was sent to ${email.trim()}`,
+                    icon: "success"
+                }).then(() => {
+                    window.location.reload();
+                });
+            }else{
+                alert(response.message);
+            }
         },
-        error: function(error){
+        error: function (error) {
+            loaderLoad("no");
             console.log(error);
         }
     })
@@ -151,12 +157,12 @@ invitebtn.addEventListener("click", function(){
 
 
 
-document.getElementById("saveimg").addEventListener("click", function(){
+document.getElementById("saveimg").addEventListener("click", function () {
     const home = localStorage.getItem("homeurl");
     window.location.href = `${baseURL}/saved${home}`;
 });
 
-function saveIMG(){
+function saveIMG() {
     Swal.fire({
         title: "Are you ready?",
         text: "Ready to save this image?",
@@ -164,22 +170,22 @@ function saveIMG(){
         showCancelButton: true,
         cancelButtonText: "Not now",
         confirmButtonText: "Yes, i see its beautiful"
-    }).then((action)=>{
-        if(action.isConfirmed){
+    }).then((action) => {
+        if (action.isConfirmed) {
             const selectedImage = localStorage.getItem("mainIMGID");
             mypost({
                 url: `${apiURL}/saveimage/${selectedImage}`,
                 method: "POST",
-                success: function(response){
-                    if(response.code==200){
+                success: function (response) {
+                    if (response.code == 200) {
                         Swal.fire({
                             title: "Success",
                             text: "Image has been saved",
                             icon: "success"
-                        }).then(()=>{
+                        }).then(() => {
                             window.location.reload();
                         });
-                    }else{
+                    } else {
                         Swal.fire({
                             title: "Failed",
                             text: response.message,
@@ -187,7 +193,7 @@ function saveIMG(){
                         });
                     }
                 },
-                error: function(error){
+                error: function (error) {
                     alert(error);
                 }
             })
@@ -196,7 +202,7 @@ function saveIMG(){
 }
 
 
-document.querySelector("#logout").addEventListener("click", function(){
+document.querySelector("#logout").addEventListener("click", function () {
     Swal.fire({
         title: "Are you sure?",
         text: "Proceed to logout?",
@@ -204,28 +210,28 @@ document.querySelector("#logout").addEventListener("click", function(){
         showCancelButton: true,
         cancelButtonText: "No, not right now",
         confirmButtonText: "Okay, im already done",
-    }).then((action)=>{
-        if(action.isConfirmed){
+    }).then((action) => {
+        if (action.isConfirmed) {
             loaderLoad("yes");
             const albumid = localStorage.getItem("album");
             mypost({
-                url: apiURL+`/logoutSession/${albumid}`,
+                url: apiURL + `/logoutSession/${albumid}`,
                 method: "POST",
                 data: JSON.stringify({
-                    album : localStorage.getItem("album"),
-                    user : userID,
-                    remote_id : localStorage.getItem("remote_id"),
-                    remotetoken : localStorage.getItem("remotetoken"),
+                    album: localStorage.getItem("album"),
+                    user: userID,
+                    remote_id: localStorage.getItem("remote_id"),
+                    remotetoken: localStorage.getItem("remotetoken"),
                 }),
-                success: function(response){
+                success: function (response) {
                     loaderLoad("no");
-                    if(response.code == 200){
-                        window.location.href = baseURL+"/logout";
-                    }else{
-                        console.log(response.message??"Failed");
+                    if (response.code == 200) {
+                        window.location.href = baseURL + "/logout";
+                    } else {
+                        console.log(response.message ?? "Failed");
                     }
                 },
-                error: function(error){
+                error: function (error) {
                     loaderLoad("no");
                     console.log(error.message ?? "Error");
                 }
@@ -235,18 +241,18 @@ document.querySelector("#logout").addEventListener("click", function(){
 });
 
 
-refresh.addEventListener("click", function(){
+refresh.addEventListener("click", function () {
     window.location.reload();
 });
 
-capturebtn.addEventListener('click', function(){
+capturebtn.addEventListener('click', function () {
     mypost({
         url: `${apiURL}/checkAlbum/${albumid}`,
         method: "GET",
-        success: function(response){
-            if(response.code == 200){
+        success: function (response) {
+            if (response.code == 200) {
                 window.location.href = captureID;
-            }else{
+            } else {
                 Swal.fire({
                     title: "ERROR",
                     text: response.details.error,
@@ -254,17 +260,17 @@ capturebtn.addEventListener('click', function(){
                 });
             }
         },
-        error: function(error){
+        error: function (error) {
             alert(error);
         }
     });
 });
 
 
-function loaderLoad(loading){
-    if(loading=="yes"){
+function loaderLoad(loading) {
+    if (loading == "yes") {
         loader.style.display = '';
-    }else{
+    } else {
         loader.style.display = 'none';
     }
 }

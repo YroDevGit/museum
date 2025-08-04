@@ -22,3 +22,9 @@ body {
 #message-box {
     min-height: 2.5rem;
 }
+
+#video {
+    max-height: 60vh;
+    width: 100%;
+    object-fit: contain;
+  }

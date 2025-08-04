@@ -17,13 +17,13 @@
         const loggedOut = "{{ $logout ?? 'no' }}";
     </script>
 </head>
-<div class="mb-4">
-    <img src="{{ asset('images/mylogo.png') }}" alt="Logo" class="">
-</div>
+
 
 <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
 
-
+<div class="mb-4">
+    <img src="{{ asset('images/mylogo.png') }}" height="300" width="300" alt="Logo" class="">
+</div>
 
     <div class="flex space-x-4 mb-6">
         <button id="start-scan-button"
@@ -42,8 +42,8 @@
         <p id="status-message" class="text-sm sm:text-base">Click "Start Scan" to begin.</p>
     </div>
 
-    <div id="reader" class="bg-white p-4 rounded-lg shadow-lg mb-6">
-        <video id="video" playsinline muted autoplay></video>
+    <div id="reader" class="bg-transparent p-4 rounded-lg shadow-lg mb-6" style="display: none;">
+        <video id="video" playsinline muted autoplay class="w-full max-w-md h-auto max-h-[60vh] object-contain rounded-md border border-gray-300"></video>
         <canvas id="canvas" style="display: none;"></canvas>
     </div>
 
@@ -53,7 +53,7 @@
         </p>
     </div>
 
-    <footer class="w-full text-center bg-white py-4 border-t border-gray-300 shadow-inner">
+    <footer class="w-full text-center bg-transparent py-4 border-t border-gray-300 shadow-inner">
         <p class="text-sm text-gray-500">
             © 2025 CodeYro. All rights reserved.
         </p>

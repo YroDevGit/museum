@@ -12,6 +12,15 @@ window.addEventListener("DOMContentLoaded", function () {
         window.location.href = `${baseURL}${hmurl}`; return;
     }
     resetCookies();
+    if(! checkInternet()){
+        Swal.fire({
+            title: "NETWORK ERROR",
+            text: "Make sure you have internet access",
+            icon: "error"
+        }).then(()=>{
+            window.location.reload();
+        });
+    }
 });
 const startScanButton = document.getElementById('start-scan-button');
 const stopScanButton = document.getElementById('stop-scan-button');
@@ -176,3 +185,14 @@ function checkQR(decoded) {
         }
     });
 }
+
+
+async function checkInternet() {
+    try {
+        const response = await fetch("https://www.google.com/favicon.ico", { method: 'HEAD', mode: 'no-cors' });
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
