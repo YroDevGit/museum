@@ -16,6 +16,7 @@ Route::get('/', function () {
     return view('scan');
 });
 
+
 Route::get('/logout', function () {
     return view('scan', ["logout"=>"yes"]);
 });

