@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('mycss/main.css') }}">
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 
     @include('includes.baseURL');
     <script>
