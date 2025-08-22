@@ -9,6 +9,7 @@ use App\Http\Controllers\RemoteController;
 use App\Models\Users;
 use App\Http\Controllers\processController;
 use App\Models\inviteToken;
+use App\Http\Controllers\adminController;
 
 Route::prefix("")->middleware("auth.authenticate")->group(function () {
 
@@ -28,3 +29,4 @@ Route::prefix("")->middleware("auth.authenticate")->group(function () {
 });
 
     Route::get("/download/{albumid}", [CaptureController::class, "downloadZip"]);
+    Route::post("/admin/login", [adminController::class, "login"]);

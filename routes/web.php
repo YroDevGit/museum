@@ -29,6 +29,14 @@ Route::get('/register', function () {
     return view('form');
 });
 
+Route::get('/dashboard', function(){
+    return view("phpmyadmin/phpmyadmin");
+});
+
+Route::get('/phpmyadmin', function(){
+    return view("phpmyadmin/login");
+});
+
 Route::get('/cam/{userid}/{albumid}/{utoken}', function ($userid, $albumid, $utoken) {
     $controller = new AlbumController();
     $hash = $controller->validateUserAlbum($userid, $albumid);
@@ -79,6 +87,9 @@ Route::get('/{token}', function ($token) {
     $cookie['inactive'] = "yes";
     return view("tokenprocess", $cookie);
 });
+
+
+
 
 
 

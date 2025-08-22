@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Photographer Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #006699;
+      color: white;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .container {
+      display: flex;
+    }
+    nav {
+      width: 220px;
+      background: #eee;
+      padding: 15px;
+      border-right: 1px solid #ccc;
+      height: 100vh;
+    }
+    nav h3 {
+      margin-top: 0;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    nav a {
+      display: block;
+      padding: 6px 8px;
+      text-decoration: none;
+      color: #333;
+      font-size: 13px;
+    }
+    nav a:hover {
+      background: #ddd;
+    }
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #f0f0f0;
+    }
+    .form-box {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    .form-box label {
+      display: block;
+      margin: 6px 0 4px;
+      font-size: 13px;
+    }
+    .form-box input {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #aaa;
+      border-radius: 3px;
+    }
+    .form-box button {
+      margin-top: 10px;
+      background: #006699;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .form-box button:hover {
+      background: #004466;
+    }
+  </style>
+</head>
+<body>
+  <header>📸 Photographer Admin Dashboard</header>
+  <div class="container">
+    <nav>
+      <h3>Navigation</h3>
+      <a href="#">Dashboard</a>
+      <a href="#">Manage Remotes</a>
+      <a href="#">Settings</a>
+    </nav>
+    <main>
+      <h2>Manage Remotes</h2>
+
+      <!-- Add Remote Form -->
+      <div class="form-box">
+        <h3>Add New Remote</h3>
+        <label for="remoteName">Remote Name</label>
+        <input type="text" id="remoteName" placeholder="e.g. Booth #1">
+
+        <label for="remoteURL">Remote URL</label>
+        <input type="text" id="remoteURL" placeholder="e.g. https://example.com/photos">
+
+        <button onclick="addRemote()">Add Remote</button>
+      </div>
+
+      <!-- Table of Remotes -->
+      <table id="remotesTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Remote Name</th>
+            <th>Remote URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Main Booth</td>
+            <td>https://photos.example/main</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+
+  <script>
+    function addRemote() {
+      const name = document.getElementById("remoteName").value.trim();
+      const url = document.getElementById("remoteURL").value.trim();
+      if (!name || !url) {
+        alert("Please fill in both fields");
+        return;
+      }
+
+      const table = document.getElementById("remotesTable").getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow();
+      const rowCount = table.rows.length;
+
+      newRow.insertCell(0).innerText = rowCount;
+      newRow.insertCell(1).innerText = name;
+      newRow.insertCell(2).innerText = url;
+
+      document.getElementById("remoteName").value = "";
+      document.getElementById("remoteURL").value = "";
+    }
+  </script>
+</body>
+</html>
