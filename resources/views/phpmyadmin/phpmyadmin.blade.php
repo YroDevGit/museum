@@ -262,6 +262,20 @@
                             icon: "error"
                         });return;
                     }
+
+                    mypost({
+                        url: `${apiURL}/remote/delete/${del}`,
+                        method: "POST",
+                        success: function(response){
+                            if(response.code == 200){
+                                Swal.fire({
+                                    title: "Success",
+                                    text: "Remote Deleted",
+                                    icon: "success"
+                                }).then(()=>{window.location.reload();});
+                            }
+                        }
+                    })
                 }
             });
         }, 1000);
@@ -307,9 +321,11 @@
                     let count = 1;
                     data.forEach(column => {
                         let id = column.id;
+                        let turnoff = ``;
                         let online =
                             `<button title="offline" class="action-btn-qr"><i class="fas fa-circle text-gray"></i></button>`;
                         if (column.online == 1) {
+                            turnoff = `<button class="action-btn delbtn"><i class="fas fa-power-off text-danger"></i></button>`
                             id = 0;
                             online =
                                 `<button title="live" class="action-btn"><i class="fas fa-circle text-danger"></i></button>`
@@ -319,7 +335,7 @@
                         <td>${count}</td>
                         <td>${online} ${column.id}</td>
                         <td>${column.name}</td>
-                        <td><button class="action-btn delbtn" del="${id}"><i class="fa-solid fa-trash"></i></button><button class="action-btn-qr" onclick="generateQRCode(${column.id})"><i class="fa-solid fa-qrcode"></i></button></td>
+                        <td><button class="action-btn delbtn" del="${id}"><i class="fa-solid fa-trash"></i></button><button class="action-btn-qr" onclick="generateQRCode(${column.id})"><i class="fa-solid fa-qrcode"></i></button>${turnoff}</td>
                     </tr>`);
                         count += 1;
                     });

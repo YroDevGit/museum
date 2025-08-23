@@ -34,3 +34,5 @@ Route::prefix("")->middleware("auth.authenticate")->group(function () {
     Route::get("/venue/getall", [venueController::class, "getAll"]);
     Route::post("/remote/add", [RemoteController::class, "addRemote"]);
     Route::get("/remote/getAll", [RemoteController::class, "getAll"]);
+    Route::post("/remote/delete/{id}", [RemoteController::class, "delete"]);
+    Route::post("/remote/unlive/{id}", [RemoteController::class, "unlive"]);

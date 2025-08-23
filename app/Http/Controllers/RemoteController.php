@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use TypeError;
 use App\Models\Remote;
+use App\Models\Album;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +20,7 @@ class RemoteController extends Controller
         try {
             $this->helper("Response");
             $this->helper("Hashing");
-            $data = Remote::where(["id" => $remote])->first();
+            $data = Remote::where(["id" => $remote, "status"=>1])->first();
             $token = my_hash("SALT123" . $remote);
             if (! $data) {
                 return failed_response(["error" => "ID $remote not found"]);
@@ -46,10 +47,10 @@ class RemoteController extends Controller
                 return valfailed_response(["error" => $validator->errors()]);
             }
 
-            $find = Remote::where(["id"=>$req->input("remoteid")])->first();
-            if($find){
+            $find = Remote::where(["id" => $req->input("remoteid")])->first();
+            if ($find) {
                 $idnum = $req->input("remoteid");
-                return failed_response(["error"=>"ID #$idnum is already exist"]);
+                return failed_response(["error" => "ID #$idnum is already exist"]);
             }
 
             $result = Remote::create([
@@ -61,15 +62,42 @@ class RemoteController extends Controller
                 return failed_response(["error" => "Server Error"]);
             }
 
-            return success_response(["message"=>"OK"]);
+            return success_response(["message" => "OK"]);
         } catch (TypeError $e) {
-            return error_response(["error"=> $e->getMessage()]);
+            return error_response(["error" => $e->getMessage()]);
         }
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         $this->helper("Response");
-        $result = DB::select("select r.id, v.name, (SELECT count(*) from album a where a.remote_id = r.id) as 'online' from remote r, venue v where r.venue_id = v.id order by r.id asc;");
-        return success_response(["data"=>$result]);
+        try {
+            $result = DB::select("select r.id, v.name, (SELECT count(*) from album a where a.remote_id = r.id) as 'online' from remote r, venue v where r.venue_id = v.id and r.status = 1 order by r.id asc;");
+            return success_response(["data" => $result]);
+        } catch (TypeError $e) {
+            return error_response(["error"=>$e->getMessage()]);
+        }
+    }
+
+    public function delete($id)
+    {
+        $this->helper("Response");
+        try {
+            $result = Remote::where(["id" => $id])->update(["status"=>0]);
+            return success_response(["message"=>"OK"]);
+        } catch (TypeError $e) {
+            return error_response(["error"=>$e->getMessage()]);
+        }
+    }
+
+
+    public function unlive($id){
+        $this->helper("Response");
+        try {
+            $result = Album::where(["remote_id"=>$id])->update(["status"=>"long-term"]);
+            return success_response(["message"=>"OK"]);
+        } catch (TypeError $e) {
+            return error_response(["error"=>$e->getMessage()]);
+        }
     }
 }
