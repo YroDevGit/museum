@@ -251,6 +251,20 @@
             }
         });
         getRemotes();
+        setTimeout(function() {
+            document.querySelectorAll(".delbtn").forEach(element => {
+                element.onclick = function() {
+                    const del = element.getAttribute("del");
+                    if(del==0){
+                        Swal.fire({
+                            title: "Error",
+                            text: "Remote is live, unable to delete",
+                            icon: "error"
+                        });return;
+                    }
+                }
+            });
+        }, 1000);
     });
 
 
@@ -292,16 +306,20 @@
                     const data = response.details.data;
                     let count = 1;
                     data.forEach(column => {
-                        let online = `<button title="offline" class="action-btn-qr"><i class="fas fa-circle text-gray"></i></button>`;
-                        if(column.online == 1){
-                            online = `<button title="live" class="action-btn"><i class="fas fa-circle text-danger"></i></button>`
+                        let id = column.id;
+                        let online =
+                            `<button title="offline" class="action-btn-qr"><i class="fas fa-circle text-gray"></i></button>`;
+                        if (column.online == 1) {
+                            id = 0;
+                            online =
+                                `<button title="live" class="action-btn"><i class="fas fa-circle text-danger"></i></button>`
                         }
                         add_html("#tablebody",
                             `<tr>
                         <td>${count}</td>
                         <td>${online} ${column.id}</td>
                         <td>${column.name}</td>
-                        <td><button class="action-btn"><i class="fa-solid fa-trash"></i></button><button class="action-btn-qr" onclick="generateQRCode(${column.id})"><i class="fa-solid fa-qrcode"></i></button></td>
+                        <td><button class="action-btn delbtn" del="${id}"><i class="fa-solid fa-trash"></i></button><button class="action-btn-qr" onclick="generateQRCode(${column.id})"><i class="fa-solid fa-qrcode"></i></button></td>
                     </tr>`);
                         count += 1;
                     });
