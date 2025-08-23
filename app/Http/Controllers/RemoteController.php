@@ -72,7 +72,7 @@ class RemoteController extends Controller
     {
         $this->helper("Response");
         try {
-            $result = DB::select("select r.id, v.name, (SELECT count(*) from album a where a.remote_id = r.id) as 'online' from remote r, venue v where r.venue_id = v.id and r.status = 1 order by r.id asc;");
+            $result = DB::select("select r.id, v.name, (SELECT count(*) from album a where a.remote_id = r.id and a.status = 'live') as 'online' from remote r, venue v where r.venue_id = v.id and r.status = 1 order by r.id asc;");
             return success_response(["data" => $result]);
         } catch (TypeError $e) {
             return error_response(["error"=>$e->getMessage()]);
@@ -94,7 +94,7 @@ class RemoteController extends Controller
     public function unlive($id){
         $this->helper("Response");
         try {
-            $result = Album::where(["remote_id"=>$id])->update(["status"=>"long-term"]);
+            $result = Album::where(["remote_id"=>$id])->update(["status"=>"longterm"]);
             return success_response(["message"=>"OK"]);
         } catch (TypeError $e) {
             return error_response(["error"=>$e->getMessage()]);

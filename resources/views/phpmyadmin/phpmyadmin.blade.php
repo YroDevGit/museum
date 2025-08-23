@@ -100,7 +100,7 @@
         }
 
         .form-box input {
-            width: 100%;
+            width: 20%;
             padding: 6px;
             border: 1px solid #aaa;
             border-radius: 3px;
@@ -221,6 +221,50 @@
         </div>
     </div>
 </body>
+<style>
+    #loadbc {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10000;
+
+        display: flex;
+        /* enables flexbox */
+        align-items: center;
+        /* vertical center */
+        justify-content: center;
+        /* horizontal center */
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .loading-circle {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 5px solid yellow;
+        border-top: 5px solid transparent;
+        animation: spin 1s linear infinite;
+    }
+</style>
+<div id="loadbc">
+    <div>
+        <div class="loading-circle">
+
+        </div>
+    </div>
+</div>
 
 </html>
 <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
@@ -251,35 +295,86 @@
             }
         });
         getRemotes();
-        setTimeout(function() {
-            document.querySelectorAll(".delbtn").forEach(element => {
-                element.onclick = function() {
-                    const del = element.getAttribute("del");
-                    if(del==0){
-                        Swal.fire({
-                            title: "Error",
-                            text: "Remote is live, unable to delete",
-                            icon: "error"
-                        });return;
-                    }
-
-                    mypost({
-                        url: `${apiURL}/remote/delete/${del}`,
-                        method: "POST",
-                        success: function(response){
-                            if(response.code == 200){
-                                Swal.fire({
-                                    title: "Success",
-                                    text: "Remote Deleted",
-                                    icon: "success"
-                                }).then(()=>{window.location.reload();});
-                            }
-                        }
-                    })
-                }
-            });
-        }, 1000);
+        setTimeout(autoLoadActions, 4000);
     });
+
+
+    function autoLoadActions() {
+        loadbc.style.display = 'none';
+        document.querySelectorAll(".delbtn").forEach(element => {
+            element.onclick = function() {
+                const del = element.getAttribute("del");
+                if (del == 0) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Remote is live, unable to delete",
+                        icon: "error"
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: "Are you sure",
+                    text: `do you want to delete remote #${del}?`,
+                    icon: "question",
+                    showCancelButton: true,
+                    showConfirmButton: true
+                }).then((question) => {
+                    if (question.isConfirmed) {
+                        mypost({
+                            url: `${apiURL}/remote/delete/${del}`,
+                            method: "POST",
+                            success: function(response) {
+                                if (response.code == 200) {
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: "Remote Deleted",
+                                        icon: "success"
+                                    }).then(() => {
+                                        window.location
+                                            .reload();
+                                    });
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+        });
+
+
+        document.querySelectorAll(".offbtn").forEach(elem => {
+            elem.onclick = function() {
+                const del = elem.getAttribute("del");
+                Swal.fire({
+                    title: "Are you sure",
+                    text: `do you want to unlive remote #${del}?`,
+                    icon: "question",
+                    showCancelButton: true,
+                    showConfirmButton: true
+                }).then((question) => {
+                    if (question.isConfirmed) {
+                        mypost({
+                            url: `${apiURL}/remote/unlive/${del}`,
+                            method: "POST",
+                            success: function(response) {
+                                if (response.code == 200) {
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: "Remote Unlive",
+                                        icon: "success"
+                                    }).then(() => {
+                                        window.location
+                                            .reload();
+                                    });
+                                }
+                            }
+                        });
+                    }
+                })
+            }
+        });
+    }
 
 
     function generateQRCode(id) {
@@ -325,7 +420,8 @@
                         let online =
                             `<button title="offline" class="action-btn-qr"><i class="fas fa-circle text-gray"></i></button>`;
                         if (column.online == 1) {
-                            turnoff = `<button class="action-btn delbtn"><i class="fas fa-power-off text-danger"></i></button>`
+                            turnoff =
+                                `<button class="action-btn offbtn" del="${id}"><i class="fas fa-power-off text-danger"></i></button>`
                             id = 0;
                             online =
                                 `<button title="live" class="action-btn"><i class="fas fa-circle text-danger"></i></button>`
