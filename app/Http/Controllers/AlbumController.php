@@ -213,15 +213,16 @@ class AlbumController extends Controller
                 return failed_response(["error" => "user error"]);
             }
             $body = "Inactive album: " . env("APP_ROOT") . $hashCode;
-            $checkAlbum = Album::where(["id" => $albumId, "status" => "live"])->first();
+            $checkAlbum = Album::where(["id" => $albumId, "log"=>0])->first();
             if ($checkAlbum) {
+                Album::where(["id"=>$albumId])->update(["log"=>1]);
                 foreach ($user as $k) {
                     $sent = $mail->sendEmail($k['email'], "ALBUM", $body);
                 }
             }
             $result = Album::where(["id" => $albumId])->update(["status" => "longterm"]);
             DB::commit();
-            return success_response(["data" => $result]);
+            return success_response(["data" => $result, "user"=>$user, "album"=>$checkAlbum]);
         } catch (Exception $e) {
             DB::rollBack();
             return error_response(["error" => $e->getMessage()]);

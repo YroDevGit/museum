@@ -3,9 +3,12 @@ inviteusericon.addEventListener("click", function () {
     fullemail.style.display = "";
 });
 
+let loggedout = 0;
+
 
 //load all images
 function loadAllImage() {
+    checkRemote();
     mypost({
         url: `${apiURL}/upload/${albumid}`,
         method: "GET",
@@ -55,9 +58,37 @@ $(document).ready(function () {
     localStorage.removeItem("contentToken");
     loadAllImage();
     setInterval(() => {
+        if(loggedout == 1){
+            return;
+        }
         loadAllImage();
-    }, 7000);
+    }, 10000);
 });
+
+
+function checkRemote() {
+    const inactive = localStorage.getItem("dasayu3db6434");
+    if(inactive){
+        return;
+    }
+    const rem = localStorage.getItem("remote_id");
+    mypost({
+        url: `${apiURL}/remote/check/${rem}`,
+        method: "GET",
+        success: function (response) {
+            if (response.code != 200) {
+                loggedout = 1;
+                Swal.fire({
+                    title: "SESSION EXPIRED",
+                    text: "Your session is now expired",
+                    icon: "error"
+                }).then(() => {
+                    logout();
+                });
+            }
+        }
+    });
+}
 
 //display image
 function displayIMG(img, imgid) {
@@ -144,7 +175,7 @@ invitebtn.addEventListener("click", function () {
                 }).then(() => {
                     window.location.reload();
                 });
-            }else{
+            } else {
                 alert(response.message);
             }
         },
@@ -212,34 +243,40 @@ document.querySelector("#logout").addEventListener("click", function () {
         confirmButtonText: "Okay, im already done",
     }).then((action) => {
         if (action.isConfirmed) {
-            loaderLoad("yes");
-            const albumid = localStorage.getItem("album");
-            mypost({
-                url: apiURL + `/logoutSession/${albumid}`,
-                method: "POST",
-                data: JSON.stringify({
-                    album: localStorage.getItem("album"),
-                    user: userID,
-                    remote_id: localStorage.getItem("remote_id"),
-                    remotetoken: localStorage.getItem("remotetoken"),
-                }),
-                success: function (response) {
-                    loaderLoad("no");
-                    if (response.code == 200) {
-                        window.location.href = baseURL + "/logout";
-                    } else {
-                        console.log(response.message ?? "Failed");
-                    }
-                },
-                error: function (error) {
-                    loaderLoad("no");
-                    console.log(error.message ?? "Error");
-                }
-            })
+            logout();
         }
     });
 });
 
+
+function logout() {
+    loggedout = 1;
+    loaderLoad("yes");
+    const albumid = localStorage.getItem("album");
+    mypost({
+        url: apiURL + `/logoutSession/${albumid}`,
+        method: "POST",
+        data: JSON.stringify({
+            album: localStorage.getItem("album"),
+            user: userID,
+            remote_id: localStorage.getItem("remote_id"),
+            remotetoken: localStorage.getItem("remotetoken"),
+        }),
+        success: function (response) {
+            loaderLoad("no");
+            //console.log(response);
+            if (response.code == 200) {
+                window.location.href = baseURL + "/logout";
+            } else {
+                console.log(response.message ?? "Failed");
+            }
+        },
+        error: function (error) {
+            loaderLoad("no");
+            console.log(error.message ?? "Error");
+        }
+    });
+}
 
 refresh.addEventListener("click", function () {
     window.location.reload();

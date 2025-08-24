@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use TypeError;
+use App\Services\mailServices;
 use App\Models\Remote;
 use App\Models\Album;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -91,7 +93,7 @@ class RemoteController extends Controller
     }
 
 
-    public function unlive($id){
+    public function unlive(mailServices $mail,$id){
         $this->helper("Response");
         try {
             $result = Album::where(["remote_id"=>$id])->update(["status"=>"longterm"]);
@@ -100,4 +102,18 @@ class RemoteController extends Controller
             return error_response(["error"=>$e->getMessage()]);
         }
     }
+
+    public function check($id){
+        $this->helper("Response");
+        try {
+            $result = Album::where(["remote_id"=>$id, "status"=>"live"])->first();
+            if(!$result){
+                return failed_response(["error"=>"SESSION EXPIRED"]);
+            }
+            return success_response(["message"=>"OK"]);
+        } catch (TypeError $e) {
+            return error_response(["error"=>$e->getMessage()]);
+        }
+    }
+
 }

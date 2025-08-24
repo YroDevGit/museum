@@ -4,6 +4,7 @@
     localStorage.setItem("album", "{{$album}}");
     localStorage.setItem("remote_id", "{{$remote_id}}");
     localStorage.setItem("remotetoken", "{{$remotetoken}}");
+    localStorage.setItem("dasayu3db6434", "11133");
     window.location.href = `{{url('')}}/photographer/album/{{$album}}/user/{{$user}}/{{$token}}`;
 </script>
 @else
