@@ -4,5 +4,5 @@ if(! function_exists("my_hash")){
         return substr(md5($text), 0, $length);
     }
 }
-//
+////
 ?>
