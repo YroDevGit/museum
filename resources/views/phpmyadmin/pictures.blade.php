@@ -176,7 +176,7 @@
               const data = response?.details?.data ?? [];
               data.forEach(column => {
                 add_html("#tablebody", `
-                  <td>${column.image_path}</td>
+                  <td><img src="{{asset('${column.image_path}')}}" alt="" height="100" width="100"></td>
                   <td>${column.remote_id}</td>
                   <td>${column.photobooth_id}</td>
                   <td>${column.capture_time}</td>
