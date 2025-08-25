@@ -35,7 +35,7 @@ class CaptureController extends Controller
 
     public function removeImg($img)
     {
-        $this->helper("response");
+        $this->helper("Response");
         try {
             $result =  Capture::where(['id' => $img])->first();
             if (!$result) {
