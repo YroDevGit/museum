@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url = "/photographer/invited/" + albumID;
         }
         mypost({
-            url: apiURL+url,
+            url: apiURL + url,
             method: "POST",
             data: JSON.stringify({
                 name: name,
@@ -41,8 +41,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 remote_id: localStorage.getItem("remote_id")
             }),
             success: function (response) {
-                if(response.code != 200){
-                    alert(response.details.error);return;
+                if (response.code != 200) {
+                    Swal.fire({
+                        title: "Failed",
+                        text: response.message,
+                        icon: "warning"
+                    });
+                    return;
                 }
                 const data = response?.details?.data;
                 const albums = data.albums;
@@ -86,8 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Email:', email);
         console.log('Venue:', venue);
 
-        formMessage.textContent = 'Details submitted successfully!';
-        formMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
+        //formMessage.textContent = 'Details submitted successfully!';
+        //formMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
 
         detailsForm.reset();
     });

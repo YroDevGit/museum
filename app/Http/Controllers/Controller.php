@@ -8,6 +8,7 @@ abstract class Controller
 
     public function helper(string $helper)
     {
+        $helper = ucfirst($helper);
         require_once base_path("app/Helpers/$helper.php");
     }
 
