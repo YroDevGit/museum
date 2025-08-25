@@ -75,7 +75,7 @@ Route::get('/shareqr/{remote}/{token}', function ($remote, $token) {
 });
 
 Route::get("/sharemail/{invite_token}", function($invite_token){
-    $find = inviteToken::where(["token"=>$invite_token,"status"=>0])->last();
+    $find = inviteToken::where(["token"=>$invite_token,"status"=>0])->first();
     if(!$find){
         abort(404, "invalid link");exit;
     }
