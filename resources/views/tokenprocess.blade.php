@@ -15,6 +15,6 @@
     localStorage.setItem("remote_id", "{{$remote_id}}");
     localStorage.setItem("remotetoken", "{{$remote_token}}");
     localStorage.setItem("shared", true);
-    window.location.href = `{{url('')}}/register?em=${em}`;
+    //window.location.href = `{{url('')}}/register?em=${em}`;
 </script> 
 @endif
