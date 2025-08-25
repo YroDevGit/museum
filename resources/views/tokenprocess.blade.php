@@ -9,11 +9,12 @@
 </script>
 @else
 <script>
+    const em = "{{$email}}";
     localStorage.removeItem("homeurl");
     localStorage.setItem("album", "{{$album_id}}");
     localStorage.setItem("remote_id", "{{$remote_id}}");
     localStorage.setItem("remotetoken", "{{$remote_token}}");
     localStorage.setItem("shared", true);
-    window.location.href = `{{url('')}}/register`;
+    window.location.href = `{{url('')}}/register?em=${em}`;
 </script> 
 @endif

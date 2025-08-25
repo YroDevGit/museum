@@ -124,7 +124,6 @@ startScanButton.addEventListener('click', startScanner);
 stopScanButton.addEventListener('click', stopScanner);
 statusMessage.innerText = "Click 'Start Scan' to begin.";
 
-// Your existing checkQR function (ensure `url()` is defined or removed for static testing)
 function checkQR(decoded) {
     mypost({
         url: apiURL + '/' + decoded,

@@ -28,7 +28,8 @@ class processController extends Controller
                 "album_id" => $album_id,
                 "remote_token" => $remote_token,
                 "date_added" => now(),
-                "token" => $invite_token
+                "token" => $invite_token,
+                "email" => $to
             ]);
             if ($result) {
                 return success_response(["details" => $result]);
