@@ -84,7 +84,7 @@ Route::get("/sharemail/{invite_token}", function($invite_token){
 });
 
 Route::get('/{token}', function ($token) {
-    $cookie = cookies::where(["token"=>$token])->first();
+    $cookie = inviteToken::where(["token"=>$token])->first();
     if(!$cookie){
         abort(404, "Not found");
     }
