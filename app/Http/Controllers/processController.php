@@ -20,7 +20,7 @@ class processController extends Controller
         $invite_token = my_hash("SALT123" . $to . $remote_id);
         $subject = "PHOTO-GRAPHED INVITE";
         $url = env("APP_ROOT") . "sharemail/" . $invite_token;
-        $body = "<h1>Your friend invited you to PHOTO-GRAPHED</h1><p><b>Open:</b>$url</p>";
+        $body = "<h1>Your friend invited you to PHOTO-GRAPHED</h1><p><b>Open: </b>$url</p>";
         $useremail = $to;
         if ($mailer->sendEmail($to, $subject, $body)) {
             $result = inviteToken::create([
