@@ -115,6 +115,7 @@ document.querySelector("#delIMG").addEventListener("click", function () {
         confirmButtonText: "Okay, delete it.!"
     }).then((res) => {
         if (res.isConfirmed) {
+            loaderLoad("yes");
             const imgID = localStorage.getItem("mainIMGID");
             mypost({
                 url: `${apiURL}/img/delete/${imgID}`,
@@ -135,8 +136,10 @@ document.querySelector("#delIMG").addEventListener("click", function () {
                             icon: "error"
                         });
                     }
+                    loaderLoad("no");
                 },
                 error: function (error) {
+                    loaderLoad("no");
                     console.log(response);
                 }
             });
