@@ -5,7 +5,7 @@
     apiURL = "{{url('')}}/api"
 </script>
 <script>
-    function logOut(){
+    function logout(){
         localStorage.removeItem("admin1");
         window.location.href = baseURL+"/phpmyadmin";
     }
