@@ -4,3 +4,9 @@
     baseURL = "{{url('')}}";
     apiURL = "{{url('')}}/api"
 </script>
+<script>
+    function logOut(){
+        localStorage.removeItem("admin1");
+        window.location.href = baseURL+"/phpmyadmin";
+    }
+</script>
