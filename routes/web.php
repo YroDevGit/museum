@@ -75,21 +75,21 @@ Route::get('/shareqr/{remote}/{token}', function ($remote, $token) {
 });
 
 Route::get("/sharemail/{invite_token}", function($invite_token){
-    $find = inviteToken::where(["token"=>$invite_token,"status"=>0])->first();
+    $find = inviteToken::where(["token"=>$invite_token,"status"=>0])->last();
     if(!$find){
         abort(404, "invalid link");exit;
     }
     //to-add:: update status to 1
+    //echo($find);
     return view("tokenprocess", $find);
 });
 
 Route::get('/{token}', function ($token) {
-    $cookie = inviteToken::where(["token"=>$token])->first();
+    $cookie = cookies::where(["token"=>$token])->first();
     if(!$cookie){
         abort(404, "Not found");
     }
     $cookie['inactive'] = "yes";
-    $cookie['email'] = $cookie['email'];
     return view("tokenprocess", $cookie);
 });
 
