@@ -89,6 +89,7 @@ Route::get('/{token}', function ($token) {
         abort(404, "Not found");
     }
     $cookie['inactive'] = "yes";
+    $cookie['email'] = $cookie['email'];
     return view("tokenprocess", $cookie);
 });
 
