@@ -64,7 +64,7 @@ class CaptureController extends Controller
 
     public function saveImage($imageId)
     {
-        $this->helper("response");
+        $this->helper("Response");
         try {
             $result = Capture::where(["id" => $imageId])->update([
                 "status" => 1
