@@ -188,6 +188,7 @@
             success: function(response){
                 if(response.code == 200){
                     if(response.details.login == 1){
+                        localStograge.setItem("admin1", "isLoggedIn");
                         window.location.href = baseURL+"/dashboard";
                     } else {
                         displayError("Invalid credentials. Cannot log in to the MySQL server.");

@@ -168,6 +168,11 @@
 
     <script>
       window.addEventListener("DOMContentLoaded", function(){
+        const adm = localStorage.getItem("admin1");
+        if(! adm){
+          window.location.href = baseURL+"/phpmyadmin";
+          return;
+        }
         mypost({
           url: `${apiURL}/showGallery`,
           method: "GET",
