@@ -178,7 +178,7 @@
                 add_html("#tablebody", `
                   <td><img src="{{asset('${column.image_path}')}}" alt="" height="100" width="100"></td>
                   <td>${column.remote_id}</td>
-                  <td>${column.photobooth_id}</td>
+                  <td>${column.email}</td>
                   <td>${column.capture_time}</td>
                   <td>${column.status}</td>`);
               });
