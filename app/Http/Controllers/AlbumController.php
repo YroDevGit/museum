@@ -43,7 +43,7 @@ class AlbumController extends Controller
                 return valfailed_response(["errors" => $validator->errors()]);
             }
 
-            $check = User::where(["email"=>$req->input("email")])->first();
+            $check = Users::where(["email"=>$req->input("email")])->first();
             if($check){
                 return failed_response(["message"=>"Email already exist.!"]);
             }
