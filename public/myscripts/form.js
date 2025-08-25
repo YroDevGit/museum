@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.code != 200) {
                     Swal.fire({
                         title: "Failed",
-                        text: response.message,
+                        text: response.details.message,
                         icon: "warning"
                     });
                     return;
