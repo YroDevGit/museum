@@ -11,6 +11,7 @@ use App\Http\Resources\CaptureUpdates;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\DB;
 
 class CaptureController extends Controller
 {
@@ -128,5 +129,12 @@ class CaptureController extends Controller
         }
 
         return response()->json(['error' => 'Unable to create ZIP file'], 500);
+    }
+
+
+    public function showGallery(){
+        $this->helper("Response");
+        $result = DB::select("SELECT c.image_path, c.remote_id, c.photobooth_id, u.email, c.capture_time, c.`status` FROM album a, capture c, `user` u WHERE c.album_id =  a.id AND u.album_id = a.id");
+        return success_response(["data"=>$result]);
     }
 }

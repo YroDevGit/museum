@@ -33,6 +33,10 @@ Route::get('/dashboard', function(){
     return view("phpmyadmin/phpmyadmin");
 });
 
+Route::get('/gallery', function(){
+    return view("phpmyadmin/pictures");
+});
+
 Route::get('/phpmyadmin', function(){
     return view("phpmyadmin/login");
 });

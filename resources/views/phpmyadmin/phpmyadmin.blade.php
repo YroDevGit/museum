@@ -156,12 +156,7 @@
 <body>
     <header>📸 Photographer Admin Dashboard</header>
     <div class="container1">
-        <nav>
-            <h3>Navigation</h3>
-            <a href="#">Dashboard</a>
-            <a href="#">Manage Remotes</a>
-            <a href="#">Settings</a>
-        </nav>
+        @include('../includes/adminnav')
         <main>
             <h2>Manage Remotes</h2>
 

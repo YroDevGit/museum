@@ -26,7 +26,8 @@ Route::prefix("")->middleware("auth.authenticate")->group(function () {
     Route::post("/saveimage/{imageid}", [CaptureController::class, "saveImage"]);
     Route::post("/logoutSession/{albumid}", [AlbumController::class, "logoutsession"]); 
     Route::get("/special", [processController::class, "special"]);  
-    Route::get("/checkAlbum/{albumid}", [AlbumController::class, "checkAlbum"]);   
+    Route::get("/checkAlbum/{albumid}", [AlbumController::class, "checkAlbum"]);
+    Route::get("/showGallery", [CaptureController::class, "showGallery"]);      
 });
 
     Route::get("/download/{albumid}", [CaptureController::class, "downloadZip"]);
