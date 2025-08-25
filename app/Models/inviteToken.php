@@ -14,7 +14,8 @@ class inviteToken extends Model
         "remote_token",
         "date_added",
         "status",
-        "token"
+        "token",
+        "email"
     ];
 
     public $timestamps =false;
