@@ -15,7 +15,7 @@ class adminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $header = $request->header("apikey");
+        $header = $request->header("Apikey");
         if (!$header) {
             return response()->json([
                 "code" => env("CODE_UNAUTHORIZE"),
@@ -27,7 +27,7 @@ class adminAuth
             return response()->json([
                 "code" => env("CODE_UNAUTHORIZE"),
                 "message" => "Unauthorize",
-                "details" => ["error" => "Invalid apikey"]
+                "details" => ["error" => "Invalid apikey", "head"=>$header, "req"=>env("API_KEY")]
             ]);
         }
         return $next($request);

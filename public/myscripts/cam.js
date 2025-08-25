@@ -56,6 +56,15 @@ flipBtn.addEventListener('click', () => {
     startCamera(currentFacingMode);
 });
 
+
+function loaderLoad(loading) {
+    if (loading == "yes") {
+        loader.style.display = '';
+    } else {
+        loader.style.display = 'none';
+    }
+}
+
 // Capture frame
 captureBtn.addEventListener('click', () => {
     const ctx = canvas.getContext('2d');
@@ -90,6 +99,7 @@ modal.addEventListener('click', (e) => {
 
 // Upload to server
 uploadBtn.addEventListener('click', () => {
+    loaderLoad("yes");
     const imageData = thumbnail.getAttribute('data-image');
     const remid = localStorage.getItem("remote_id");
 
@@ -115,6 +125,7 @@ uploadBtn.addEventListener('click', () => {
                     modal.style.display = 'none';
                 });
             }
+            loaderLoad("no");
         },
         error: function (error) {
             Swal.fire({
@@ -124,9 +135,12 @@ uploadBtn.addEventListener('click', () => {
             }).then(() => {
                 window.location.reload();
             });
+            loaderLoad("no");
         }
     });
+
 });
+
 
 // Back to home album gallery
 backBtn.addEventListener('click', () => {

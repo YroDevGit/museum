@@ -34,9 +34,16 @@
         <button id="uploadBtn">📤 Upload</button>
     </div>
 
+    
+
+
     <script src="{{ asset('jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('jspost.js') }}"></script>
     <script src="{{ asset('myscripts/cam.js') }}"></script>
 </body>
 
 </html>
+
+<div id="loader" style="display: none;">
+  <div class="spinner"></div>
+</div>
