@@ -82,6 +82,13 @@ class CaptureController extends Controller
         $folder = $albumid;
         $folderPath = public_path("uploads/$folder");
 
+        $pictures = Capture::where(['album_id'=>$albumid, "status"=>1])->get();
+        $arr_picts = [];
+        foreach($pictures as $pict){
+            $exp = explode("/", $pict->image_path);
+            $arr_picts[] = $exp[3];
+        }
+
         if (!file_exists($folderPath)) {
             abort(404, 'Folder not found.');
         }
@@ -89,7 +96,6 @@ class CaptureController extends Controller
         $zipFileName = "MyAlbum_".$folder . '.zip';
         $zipPath = public_path("uploads/temp/$zipFileName");
 
-        // Make sure temp folder exists
         if (!file_exists(dirname($zipPath))) {
             mkdir(dirname($zipPath), 0755, true);
         }
@@ -102,9 +108,14 @@ class CaptureController extends Controller
                 \RecursiveIteratorIterator::LEAVES_ONLY
             );
 
+            
             foreach ($files as $file) {
                 if (!$file->isDir()) {
                     $filePath = $file->getRealPath();
+                    $filename = $file->getFilename();
+                    if(! in_array($filename, $arr_picts)){
+                        continue;
+                    }
                     $relativePath = substr($filePath, strlen($folderPath) + 1);
 
                     $zip->addFile($filePath, $relativePath);
@@ -113,7 +124,6 @@ class CaptureController extends Controller
 
             $zip->close();
 
-            // Return download response and delete zip after send
             return response()->download($zipPath)->deleteFileAfterSend(true);
         }
 
