@@ -21,7 +21,7 @@ class processController extends Controller
         $subject = "PHOTO-GRAPHED INVITE";
         $url = env("APP_ROOT") . "sharemail/" . $invite_token;
         $body = "<h1>Your friend invited you to PHOTO-GRAPHED</h1><p><b>Open:</b>$url</p>";
-
+        $useremail = $to;
         if ($mailer->sendEmail($to, $subject, $body)) {
             $result = inviteToken::create([
                 "remote_id" => $remote_id,
@@ -29,7 +29,7 @@ class processController extends Controller
                 "remote_token" => $remote_token,
                 "date_added" => now(),
                 "token" => $invite_token,
-                "email" => $to
+                "email" => $useremail
             ]);
             if ($result) {
                 return success_response(["details" => $result]);
