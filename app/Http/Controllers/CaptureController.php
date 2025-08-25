@@ -35,8 +35,8 @@ class CaptureController extends Controller
 
     public function removeImg($img)
     {
+        $this->helper("response");
         try {
-            $this->helper("response");
             $result =  Capture::where(['id' => $img])->first();
             if (!$result) {
                 return failed_response(["error" => "Image id not found!"]);

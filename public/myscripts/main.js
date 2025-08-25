@@ -140,7 +140,7 @@ document.querySelector("#delIMG").addEventListener("click", function () {
                 },
                 error: function (error) {
                     loaderLoad("no");
-                    console.log(response);
+                    console.log(error);
                 }
             });
         }
