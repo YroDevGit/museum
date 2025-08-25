@@ -43,6 +43,11 @@ class AlbumController extends Controller
                 return valfailed_response(["errors" => $validator->errors()]);
             }
 
+            $check = User::where(["email"=>$req->input("email")])->first();
+            if($check){
+                return failed_response(["message"=>"Email already exist.!"]);
+            }
+
             $album = Album::create([
                 "remote_id" => $req->input("remote_id"),
                 "date_add" => now(),
