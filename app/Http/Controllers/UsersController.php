@@ -20,6 +20,10 @@ class UsersController extends Controller
     public function register(Request $req)
     {
         try {
+            $check = User::where(["email"=>$req->input("email")])->first();
+            if($check){
+                return failed_response(["message"=>"Email already exist.!"]);
+            }
             $result = Users::create([
                 "name" => $req->input("name"),
                 "email" => $req->input("email"),
